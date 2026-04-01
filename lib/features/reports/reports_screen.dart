@@ -260,7 +260,7 @@ class _CreateReportScreenState extends ConsumerState<CreateReportScreen> {
           fit: StackFit.expand,
           children: [
             Image.asset(
-              'images/brand_header.png',
+              'assets/images/brand_header.png',
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) => Container(
                 color: AppColors.navyDeep,
