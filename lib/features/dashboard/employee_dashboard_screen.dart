@@ -102,7 +102,7 @@ class _EmployeeDashboardScreenState extends ConsumerState<EmployeeDashboardScree
                           color: Colors.black.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 2))
                     ],
                     image: const DecorationImage(
-                      image: AssetImage('images/guard_male.png'),
+                      image: AssetImage('assets/images/guard_male.png'),
                       fit: BoxFit.cover,
                     ),
                   ),

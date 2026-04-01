@@ -19,7 +19,7 @@ class ProfileScreen extends ConsumerWidget {
             CircleAvatar(
               radius: 50,
               backgroundColor: AppColors.primaryContainer,
-              backgroundImage: const AssetImage('images/guard_male.png'),
+              backgroundImage: const AssetImage('assets/images/guard_male.png'),
             ),
             const SizedBox(height: 16),
             const Text(
