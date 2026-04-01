@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -63,7 +62,6 @@ class EmployeesScreen extends ConsumerWidget {
 
   ImageProvider _resolveImage(String url) {
     if (url.startsWith('http')) return NetworkImage(url);
-    if (kIsWeb) return NetworkImage(url);
     return AssetImage(url);
   }
 

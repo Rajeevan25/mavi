@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -102,7 +101,7 @@ class EmployeeDetailsScreen extends ConsumerWidget {
           fit: StackFit.expand,
           children: [
             if (employee.avatarUrl != null)
-              employee.avatarUrl!.startsWith('http') || kIsWeb
+              employee.avatarUrl!.startsWith('http')
                   ? Image.network(employee.avatarUrl!, fit: BoxFit.cover)
                   : Image.asset(employee.avatarUrl!, fit: BoxFit.cover)
             else
