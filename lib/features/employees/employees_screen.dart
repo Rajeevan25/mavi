@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -52,11 +53,18 @@ class EmployeesScreen extends ConsumerWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'employees_fab',
         onPressed: () => context.push('/employees/create'),
         backgroundColor: AppColors.navyDeep,
         child: const Icon(Symbols.add, color: Colors.white),
       ),
     );
+  }
+
+  ImageProvider _resolveImage(String url) {
+    if (url.startsWith('http')) return NetworkImage(url);
+    if (kIsWeb) return NetworkImage(url);
+    return AssetImage(url);
   }
 
   Widget _buildAvatar(Employee employee) {
@@ -66,7 +74,12 @@ class EmployeesScreen extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.card1,
         borderRadius: BorderRadius.circular(12),
-        image: employee.avatarUrl != null ? DecorationImage(image: NetworkImage(employee.avatarUrl!), fit: BoxFit.cover) : null,
+        image: employee.avatarUrl != null
+          ? DecorationImage(
+              image: _resolveImage(employee.avatarUrl!),
+              fit: BoxFit.cover,
+            )
+          : null,
       ),
       child: employee.avatarUrl == null ? const Icon(Symbols.person, color: AppColors.primaryContainer) : null,
     );

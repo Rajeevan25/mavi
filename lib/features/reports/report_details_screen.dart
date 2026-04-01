@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
-import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../core/utils/date_utils.dart';
+import '../../core/widgets/mavi_logo.dart';
 import '../../data/models/report.dart';
-import '../../data/repositories/job_repository.dart';
 import '../../data/repositories/report_repository.dart';
 import 'package:mavi_security/core/theme/app_colors.dart';
 
@@ -16,208 +16,344 @@ class ReportDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final reports = ref.watch(reportRepositoryProvider);
     final report = reports.where((r) => r.id == reportId).firstOrNull;
+    
     if (report == null) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Berichtsdetails')),
-        body: const Center(
-          child: Text('Bericht nicht gefunden.',
-              style: TextStyle(color: Colors.grey)),
-        ),
+        appBar: AppBar(title: const Text('Report Details')),
+        body: const Center(child: Text('Report not found.')),
       );
     }
-    final job = ref.watch(jobByIdProvider(report.jobId));
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
-      appBar: AppBar(
-        title: const Text('Berichtsdetails'),
-        actions: [
-          if (report.exportedPdf != null)
-            IconButton(
-              onPressed: () {
-                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('PDF wird exportiert...')));
-              },
-              icon: const Icon(Symbols.picture_as_pdf),
+      backgroundColor: Colors.white,
+      body: CustomScrollView(
+        slivers: [
+          _buildSliverHeader(),
+          SliverToBoxAdapter(
+            child: Center(
+              child: Container(
+                constraints: const BoxConstraints(maxWidth: 600),
+                padding: const EdgeInsets.all(20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _buildPdfTitle(report),
+                    const SizedBox(height: 24),
+                    _buildDateAndReportNo(report),
+                    const SizedBox(height: 30),
+                    _buildPdfSectionHeader('Client'),
+                    _buildClientAddress(report),
+                    const SizedBox(height: 24),
+                    _buildPdfSectionHeader('Guards'),
+                    _buildPdfGuardsTable(report.guards),
+                    const SizedBox(height: 40),
+                    _buildPdfSignature(report),
+                    const SizedBox(height: 100), // Spacing for bottom
+                  ],
+                ),
+              ),
             ),
-           IconButton(
-            onPressed: () {
-               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Bericht geteilt.')));
-            },
-            icon: const Icon(Symbols.share),
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    );
+  }
+
+  Widget _buildSliverHeader() {
+    return SliverAppBar(
+      expandedHeight: 200,
+      pinned: true,
+      backgroundColor: AppColors.navyDeep,
+      iconTheme: const IconThemeData(color: Colors.white),
+      actions: [
+        IconButton(
+          onPressed: () {},
+          icon: const Icon(Symbols.picture_as_pdf, color: Colors.white),
+        ),
+      ],
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
           children: [
-            _buildStatusHeader(report),
-            const SizedBox(height: 24),
-            _buildSectionTitle('ALLGEMEINE INFORMATIONEN'),
-            _buildInfoCard([
-              _buildInfoRow(Symbols.work, 'Auftrag', job?.title ?? 'Unbekannt'),
-              _buildInfoRow(Symbols.location_on, 'Standort', report.location),
-              _buildInfoRow(Symbols.calendar_today, 'Datum', AppDateUtils.formatDate(report.date)),
-              _buildInfoRow(Symbols.schedule, 'Zeitraum', '${report.workStart} - ${report.workEnd}'),
-              if (report.weather != null)
-                _buildInfoRow(Symbols.cloud, 'Wetter', report.weather!),
-            ]),
-            const SizedBox(height: 32),
-            _buildSectionTitle('BERICHTSTYP & DETAILS'),
-            _buildInfoCard([
-              _buildInfoRow(Symbols.description, 'Typ', report.reportType),
-              if (report.isIncident)
-                _buildInfoRow(Symbols.warning, 'Vorgang', 'VORFALL / INCIDENT', color: Colors.red),
-              if (report.policeNotified)
-                _buildInfoRow(Symbols.local_police, 'Polizei', 'Informiert', color: Colors.blue),
-            ]),
-            const SizedBox(height: 32),
-            _buildSectionTitle('TÄTIGKEITSBESCHREIBUNG'),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.black.withOpacity(0.05)),
-              ),
-              child: Text(
-                report.notes,
-                style: const TextStyle(fontSize: 15, height: 1.5, color: AppColors.textGreyDark),
-              ),
-            ),
-            const SizedBox(height: 32),
-            if (report.photoUrls.isNotEmpty) ...[
-              _buildSectionTitle('FOTOS'),
-              SizedBox(
-                height: 120,
-                child: ListView.builder(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: report.photoUrls.length,
-                  itemBuilder: (context, index) {
-                    return Container(
-                      width: 120,
-                      margin: const EdgeInsets.only(right: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[200],
-                        borderRadius: BorderRadius.circular(12),
-                        image: DecorationImage(
-                          image: NetworkImage(report.photoUrls[index]),
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    );
-                  },
+            Image.asset(
+              'images/brand_header.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: AppColors.navyDeep,
+                child: const Center(
+                  child: Icon(Symbols.broken_image, color: Colors.white24, size: 40),
                 ),
               ),
-              const SizedBox(height: 32),
-            ],
-            _buildSectionTitle('UNTERSCHRIFT'),
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
+            ),
+            // Shadow overlay for better readability
+            const DecoratedBox(
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: Colors.black.withOpacity(0.05)),
-              ),
-              child: Column(
-                children: [
-                  if (report.signatureUrl != null)
-                    Image.network(report.signatureUrl!, height: 100)
-                  else
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Text('Digital unterschrieben', style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
-                    ),
-                  const Divider(),
-                  const SizedBox(height: 8),
-                  Text(
-                    report.signedBy,
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  const Text('Verantwortlicher Mitarbeiter', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                ],
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black26, Colors.transparent, Colors.black45],
+                ),
               ),
             ),
-            const SizedBox(height: 40),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildStatusHeader(Report report) {
-    final color = report.isIncident 
-        ? (report.severity == 'high' ? Colors.red : Colors.orange) 
-        : AppColors.primaryContainer;
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.1),
-        borderRadius: BorderRadius.circular(30),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(report.isIncident ? Symbols.warning : Symbols.check_circle, size: 18, color: color),
-          const SizedBox(width: 8),
-          Text(
-            report.isIncident ? 'VORFALL GEMELDET' : 'REGULÄRER BERICHT',
-            style: TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 12),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 12),
+  Widget _buildPdfTitle(Report report) {
+    return const Center(
       child: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 11,
+        'INCIDENT REPORT',
+        style: TextStyle(
+          fontSize: 28,
           fontWeight: FontWeight.w900,
-          color: Colors.grey,
+          color: Colors.black87,
           letterSpacing: 1.2,
         ),
       ),
     );
   }
 
-  Widget _buildInfoCard(List<Widget> children) {
+  Widget _buildDateAndReportNo(Report report) {
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.black.withOpacity(0.05)),
+        color: const Color(0xFFF8F9FA),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: Colors.black12),
       ),
-      child: Column(children: children),
+      child: Column(
+        children: [
+          _buildInfoRow(Symbols.calendar_today, 'Date:', DateFormat('dd.MM.yyyy').format(report.date), true),
+          _buildInfoRow(Symbols.location_on, 'Report No.:', report.reportNumber, false),
+        ],
+      ),
     );
   }
 
-  Widget _buildInfoRow(IconData icon, String label, String value, {Color? color}) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+  Widget _buildInfoRow(IconData icon, String label, String value, bool showDivider) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: showDivider ? const Border(bottom: BorderSide(color: Colors.black12)) : null,
+      ),
       child: Row(
         children: [
-          Icon(icon, size: 20, color: color ?? AppColors.textGrey),
-          const SizedBox(width: 16),
-          Text(label, style: const TextStyle(color: AppColors.textGrey, fontSize: 14)),
-          const Spacer(),
-          Text(
-            value,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14,
-              color: color ?? AppColors.textGreyDark,
-            ),
-          ),
+          Icon(icon, size: 20, color: Colors.black54),
+          const SizedBox(width: 12),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)),
+          const SizedBox(width: 8),
+          Text(value, style: const TextStyle(fontSize: 15, color: Colors.black87)),
         ],
       ),
+    );
+  }
+
+  Widget _buildClientAddress(Report report) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 12),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black12),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 4, offset: const Offset(0, 2)),
+        ],
+      ),
+      child: Text(
+        report.clientAddress.isEmpty ? report.location : report.clientAddress,
+        style: const TextStyle(fontSize: 16, height: 1.5, fontWeight: FontWeight.w500),
+      ),
+    );
+  }
+
+  Widget _buildPdfSectionTitle(String title) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.w900,
+          color: AppColors.navyDeep,
+          fontSize: 14,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPdfSectionHeader(String title) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFC5D5F0), // Matching light blue from mockup
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Text(
+        title,
+        style: const TextStyle(
+          fontWeight: FontWeight.w900,
+          color: AppColors.navyDeep,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPdfTable(List<Widget> rows) {
+    return Container(
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black12),
+        borderRadius: BorderRadius.circular(4),
+      ),
+      child: Column(children: rows),
+    );
+  }
+
+  Widget _buildPdfTableRow(String label, String value) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: const BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.black12)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          SizedBox(width: 100, child: Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13))),
+          Expanded(child: Text(value, style: const TextStyle(fontSize: 13))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPdfGuardsTable(List<GuardEntry> guards) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Column(
+        children: guards.map((g) => Container(
+          margin: const EdgeInsets.only(bottom: 12),
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: Colors.black12),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                flex: 4,
+                child: Text(g.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15))
+              ),
+              Expanded(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Text('${g.startTime} - ${g.endTime} | Pause: ${g.pause} | Total:', 
+                      style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                    Text(g.total, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13)),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        )).toList(),
+      ),
+    );
+  }
+
+  Widget _buildPdfPhotos(Report report) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // 2 photos with 1 gap of 10px
+          final itemWidth = (constraints.maxWidth - 10) / 2;
+          final itemHeight = itemWidth * 0.65; // ~2:3 landscape aspect ratio
+          return Row(
+            children: [
+              _buildPdfPhotoThumb(
+                'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?q=80&w=600&auto=format&fit=crop',
+                itemWidth, itemHeight,
+              ),
+              const SizedBox(width: 10),
+              _buildPdfPhotoThumb(
+                'https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=600&auto=format&fit=crop',
+                itemWidth, itemHeight,
+              ),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPdfPhotoThumb(String url, double width, double height) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(2),
+        border: Border.all(color: Colors.black12),
+        image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Widget _buildPdfSignature(Report report) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Client Signature', style: TextStyle(fontSize: 12, color: Colors.grey, fontWeight: FontWeight.bold)),
+        const SizedBox(height: 10),
+        const Text(
+          'M. Muster',
+          style: TextStyle(
+            fontSize: 32,
+            fontStyle: FontStyle.italic,
+            fontWeight: FontWeight.w300,
+            color: Colors.black87,
+          ),
+        ),
+        Container(
+          width: 250,
+          margin: const EdgeInsets.only(top: 8),
+          decoration: const BoxDecoration(
+            border: Border(top: BorderSide(color: Colors.black45)),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 4),
+            child: Text(report.signedBy, style: const TextStyle(fontSize: 11)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildPdfFooter() {
+    return Row(
+      children: [
+        // Simulated QR Code
+        Container(
+          width: 60,
+          height: 60,
+          color: Colors.black,
+          child: const Icon(Symbols.qr_code, color: Colors.white, size: 40),
+        ),
+        const SizedBox(width: 20),
+        const Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text('Hauptstrasse 45, 8000 Zürich - UID: CHE-123.456.789', style: TextStyle(fontSize: 10, color: Colors.grey)),
+              Text('TEL: +41 44 125 45 67 - www.mavi-security.ch', style: TextStyle(fontSize: 10, color: Colors.grey)),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

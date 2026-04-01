@@ -33,6 +33,8 @@ abstract class Employee with _$Employee {
     @Default(false) bool weaponsPermit,
     DateTime? firstAidExpiry,
     String? uniformSize,
+    @Default(0.0) double earnedBalance,
+    @Default(25.0) double hourlyRate,
   }) = _Employee;
 
   factory Employee.fromJson(Map<String, dynamic> json) => _$EmployeeFromJson(json);

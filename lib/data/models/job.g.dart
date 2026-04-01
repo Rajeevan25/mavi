@@ -24,6 +24,8 @@ _Job _$JobFromJson(Map<String, dynamic> json) => _Job(
   notes: json['notes'] as String?,
   clientName: json['clientName'] as String?,
   contactPhone: json['contactPhone'] as String?,
+  targetLatitude: (json['targetLatitude'] as num?)?.toDouble(),
+  targetLongitude: (json['targetLongitude'] as num?)?.toDouble(),
 );
 
 Map<String, dynamic> _$JobToJson(_Job instance) => <String, dynamic>{
@@ -39,6 +41,8 @@ Map<String, dynamic> _$JobToJson(_Job instance) => <String, dynamic>{
   'notes': instance.notes,
   'clientName': instance.clientName,
   'contactPhone': instance.contactPhone,
+  'targetLatitude': instance.targetLatitude,
+  'targetLongitude': instance.targetLongitude,
 };
 
 const _$JobStatusEnumMap = {

@@ -2,12 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:go_router/go_router.dart';
+import 'package:intl/intl.dart';
 import '../../core/utils/date_utils.dart';
 import '../../core/widgets/discard_guard.dart';
+import '../../core/widgets/mavi_logo.dart';
 import '../../data/models/report.dart';
 import '../../data/repositories/report_repository.dart';
 import '../../data/repositories/job_repository.dart';
 import '../../data/repositories/employee_repository.dart';
+import '../../core/providers/auth_provider.dart';
 import 'package:mavi_security/core/theme/app_colors.dart';
 
 class ReportsScreen extends ConsumerWidget {
@@ -16,6 +19,8 @@ class ReportsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final reports = ref.watch(reportRepositoryProvider);
+    final role = ref.watch(authProvider);
+    final isEmployee = role == UserRole.employee;
 
     return Scaffold(
       appBar: AppBar(
@@ -40,16 +45,19 @@ class ReportsScreen extends ConsumerWidget {
                 return _buildReportCard(context, report, ref);
               },
             ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => context.push('/reports/create'),
-        label: const Text('NEUER BERICHT',
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 12,
-                color: Colors.white)),
-        icon: const Icon(Symbols.add, color: Colors.white),
-        backgroundColor: AppColors.navyDeep,
-      ),
+      floatingActionButton: isEmployee
+          ? FloatingActionButton.extended(
+              heroTag: 'reports_fab',
+              onPressed: () => context.push('/reports/create'),
+              label: const Text('NEUER BERICHT',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 12,
+                      color: Colors.white)),
+              icon: const Icon(Symbols.add, color: Colors.white),
+              backgroundColor: AppColors.navyDeep,
+            )
+          : null,
     );
   }
 
@@ -130,503 +138,471 @@ class CreateReportScreen extends ConsumerStatefulWidget {
 class _CreateReportScreenState extends ConsumerState<CreateReportScreen> {
   final _formKey = GlobalKey<FormState>();
   final _notesController = TextEditingController();
-  final _startController = TextEditingController();
-  final _endController = TextEditingController();
+  final _clientAddressController = TextEditingController();
   String? _selectedJobId;
-  String _reportType = 'Routine';
-  String _severity = 'low';
-  bool _isIncident = false;
-  String? _weather = 'Sonnig';
-  bool _policeNotified = false;
+  String _reportNumber = '2024-0158';
+  String _reportType = 'Incident';
+  DateTime _reportDate = DateTime.now();
   bool _isSigned = false;
+
+  final List<GuardEntry> _guards = [
+    const GuardEntry(
+      name: 'Thomas Keller',
+      startTime: '18:00',
+      endTime: '02:00',
+      pause: '00:30',
+      total: '7:30',
+    ),
+    const GuardEntry(
+      name: 'Julia Meier',
+      startTime: '18:00',
+      endTime: '02:00',
+      pause: '00:30',
+      total: '7:30',
+    ),
+  ];
 
   @override
   void initState() {
     super.initState();
     _selectedJobId = widget.jobId;
-    // Pre-fill times from selected job if available
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _prefillTimesFromJob();
-    });
-  }
-
-  void _prefillTimesFromJob() {
-    if (_selectedJobId == null) return;
-    final jobs = ref.read(jobRepositoryProvider);
-    try {
-      final job = jobs.firstWhere((j) => j.id == _selectedJobId);
-      _startController.text = job.startTime;
-      _endController.text = job.endTime;
-    } catch (_) {}
+    _clientAddressController.text = 'Hauptstrasse 12, 8001 Zürich';
   }
 
   @override
   void dispose() {
     _notesController.dispose();
-    _startController.dispose();
-    _endController.dispose();
+    _clientAddressController.dispose();
     super.dispose();
   }
 
-  void _onJobChanged(String? jobId) {
-    setState(() => _selectedJobId = jobId);
-    if (jobId == null) return;
-    final jobs = ref.read(jobRepositoryProvider);
-    try {
-      final job = jobs.firstWhere((j) => j.id == jobId);
-      _startController.text = job.startTime;
-      _endController.text = job.endTime;
-    } catch (_) {}
-  }
-
   void _submit() {
-    if (_selectedJobId == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Bitte einen Auftrag auswählen.')),
-      );
-      return;
-    }
     if (!_formKey.currentState!.validate()) return;
-
-    final jobs = ref.read(jobRepositoryProvider);
-    final employees = ref.read(employeeRepositoryProvider);
-
-    String location = '';
-    try {
-      location = jobs.firstWhere((j) => j.id == _selectedJobId).location;
-    } catch (_) {}
-
-    // Use the logged-in user's name (Markus Keller, hardcoded for demo)
-    const signedBy = 'Markus Keller';
 
     final newReport = Report(
       id: 'r_${DateTime.now().millisecondsSinceEpoch}',
-      jobId: _selectedJobId!,
-      location: location,
-      date: DateTime.now(),
-      workStart: _startController.text.trim().isEmpty
-          ? '00:00'
-          : _startController.text.trim(),
-      workEnd: _endController.text.trim().isEmpty
-          ? '00:00'
-          : _endController.text.trim(),
-      notes: _notesController.text.trim(),
+      reportNumber: _reportNumber,
+      jobId: _selectedJobId ?? 'unknown',
+      location: _clientAddressController.text,
+      clientAddress: _clientAddressController.text,
+      date: _reportDate,
+      workStart: '18:00',
+      workEnd: '02:00',
+      notes: _notesController.text,
       reportType: _reportType,
-      isIncident: _isIncident,
-      severity: _isIncident ? _severity : 'low',
-      weather: _weather,
-      policeNotified: _isIncident && _policeNotified,
-      signedBy: signedBy,
-      signatureUrl: _isSigned
-          ? 'https://ui-avatars.com/api/?name=M+Keller&background=eee&color=000&bold=true&size=100&length=2'
-          : null,
+      isIncident: true,
+      signedBy: 'M. Muster',
+      guards: _guards,
+      signatureUrl: _isSigned ? 'mock_signature_url' : null,
     );
 
     ref.read(reportRepositoryProvider.notifier).addReport(newReport);
 
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
-        content: Text('Bericht erfolgreich gespeichert.'),
+        content: Text('Report saved successfully.'),
         backgroundColor: AppColors.navyDeep,
       ),
     );
     context.pop();
-    context.push('/reports/${newReport.id}');
   }
 
   @override
   Widget build(BuildContext context) {
-    final jobs = ref.watch(jobRepositoryProvider);
-
     return DiscardGuard(
-      hasChanges: () =>
-          _notesController.text.isNotEmpty || _selectedJobId != null,
+      hasChanges: () => _notesController.text.isNotEmpty || _isSigned,
       child: Scaffold(
-      backgroundColor: AppColors.backgroundAlt,
-      appBar: AppBar(title: const Text('Bericht erstellen')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _buildSectionTitle('AUFTRAG AUSWÄHLEN'),
-              DropdownButtonFormField<String>(
-                isExpanded: true,
-                value: _selectedJobId,
-                hint: const Text('Auftrag auswählen...'),
-                items: jobs
-                    .map((job) => DropdownMenuItem(
-                        value: job.id,
-                        child: Text(
-                          job.title,
-                          overflow: TextOverflow.ellipsis,
-                        )))
-                    .toList(),
-                onChanged: _onJobChanged,
-                validator: (val) =>
-                    val == null ? 'Bitte einen Auftrag auswählen' : null,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.white,
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          const BorderSide(color: AppColors.error)),
+        backgroundColor: Colors.white,
+        body: CustomScrollView(
+          physics: const BouncingScrollPhysics(),
+          slivers: [
+            _buildSliverHeader(),
+            SliverToBoxAdapter(
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    _buildTitleSection(),
+                    _buildIncidentDetails(),
+                    _buildSectionHeader('Client'),
+                    _buildClientDetails(),
+                    _buildSectionHeader('Guards'),
+                    _buildGuardsList(),
+                    _buildSectionHeader('Incident Photos', icon: Symbols.photo_camera),
+                    _buildPhotosSection(),
+                    _buildSectionHeader('Notes'),
+                    _buildNotesSection(),
+                    _buildSignatureSection(),
+                    _buildActionButtons(),
+                    const SizedBox(height: 100),
+                  ],
                 ),
-              ),
-              const SizedBox(height: 24),
-              _buildSectionTitle('ZEITRAUM & WETTER'),
-              Row(
-                children: [
-                  Expanded(
-                    child: TextFormField(
-                      controller: _startController,
-                      decoration: InputDecoration(
-                        labelText: 'Beginn',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none),
-                      ),
-                      validator: (val) =>
-                          val == null || val.trim().isEmpty
-                              ? 'Pflichtfeld'
-                              : null,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: TextFormField(
-                      controller: _endController,
-                      decoration: InputDecoration(
-                        labelText: 'Ende',
-                        filled: true,
-                        fillColor: Colors.white,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide.none),
-                      ),
-                      validator: (val) =>
-                          val == null || val.trim().isEmpty
-                              ? 'Pflichtfeld'
-                              : null,
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 16),
-              DropdownButtonFormField<String>(
-                isExpanded: true,
-                value: _weather,
-                items: ['Sonnig', 'Bewölkt', 'Regnerisch', 'Schnee', 'Nebel']
-                    .map((w) => DropdownMenuItem(
-                        value: w,
-                        child: Text(
-                          w,
-                          overflow: TextOverflow.ellipsis,
-                        )))
-                    .toList(),
-                onChanged: (val) => setState(() => _weather = val),
-                decoration: InputDecoration(
-                  labelText: 'Wettersituation',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none),
-                ),
-              ),
-              const SizedBox(height: 32),
-              _buildSectionTitle('BERICHTSTYP'),
-              _buildReportTypeSelector(),
-              if (_isIncident) ...[
-                const SizedBox(height: 24),
-                _buildIncidentSection(),
-              ],
-              const SizedBox(height: 32),
-              _buildSectionTitle('TÄTIGKEITSBERICHT'),
-              TextFormField(
-                controller: _notesController,
-                maxLines: 5,
-                validator: (val) =>
-                    val == null || val.trim().isEmpty
-                        ? 'Bitte einen Bericht verfassen'
-                        : null,
-                decoration: InputDecoration(
-                  hintText: 'Zusammenfassung der ausgeführten Arbeiten...',
-                  filled: true,
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide.none),
-                  errorBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide:
-                          const BorderSide(color: AppColors.error)),
-                ),
-              ),
-              const SizedBox(height: 32),
-              _buildSectionTitle('FOTOS & SIGNATUR'),
-              Row(
-                children: [
-                  _buildPhotoSquare(),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: GestureDetector(
-                      onTap: () => setState(() => _isSigned = !_isSigned),
-                      child: Container(
-                        height: 100,
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                          color: _isSigned
-                              ? Colors.green.withOpacity(0.1)
-                              : Colors.black.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(16),
-                          border: Border.all(
-                              color: _isSigned
-                                  ? Colors.green
-                                  : Colors.black.withOpacity(0.1),
-                              width: 1),
-                        ),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Icon(
-                                _isSigned
-                                    ? Symbols.history_edu
-                                    : Symbols.draw,
-                                color:
-                                    _isSigned ? Colors.green : Colors.grey),
-                            const SizedBox(height: 4),
-                            Text(
-                              _isSigned
-                                  ? 'Unterschrieben'
-                                  : 'Unterschreiben',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: _isSigned
-                                      ? Colors.green
-                                      : Colors.grey,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 48),
-              SizedBox(
-                width: double.infinity,
-                height: 56,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.navyDeep,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(16)),
-                  ),
-                  onPressed: _submit,
-                  child: const Text(
-                    'SPEICHERN & SENDEN',
-                    style: TextStyle(
-                        color: Colors.white, fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 40),
-            ],
-          ),
-        ),
-      ),
-    )); // DiscardGuard + Scaffold
-  }
-
-  Widget _buildSectionTitle(String title) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 4, bottom: 8),
-      child: Text(
-        title,
-        style: const TextStyle(
-            fontSize: 11,
-            fontWeight: FontWeight.w900,
-            letterSpacing: 1.0,
-            color: Colors.grey),
-      ),
-    );
-  }
-
-  Widget _buildReportTypeSelector() {
-    final types = [
-      {'label': 'Routine', 'icon': Symbols.check_circle_outline},
-      {'label': 'Vorfall', 'icon': Symbols.warning},
-      {'label': 'Wartung', 'icon': Symbols.build},
-      {'label': 'Alarm', 'icon': Symbols.notification_important},
-    ];
-
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: types.map((t) {
-        final isSelected = _reportType == t['label'];
-        return Expanded(
-          child: GestureDetector(
-            onTap: () {
-              setState(() {
-                _reportType = t['label'] as String;
-                _isIncident =
-                    _reportType == 'Vorfall' || _reportType == 'Alarm';
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 4),
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              decoration: BoxDecoration(
-                color: isSelected
-                    ? AppColors.primaryContainer
-                    : Colors.white,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                    color: isSelected
-                        ? AppColors.primaryContainer
-                        : Colors.black.withOpacity(0.05)),
-              ),
-              child: Column(
-                children: [
-                  Icon(t['icon'] as IconData,
-                      color: isSelected ? Colors.white : Colors.grey,
-                      size: 20),
-                  const SizedBox(height: 4),
-                  Text(
-                    t['label'] as String,
-                    style: TextStyle(
-                        fontSize: 10,
-                        fontWeight: FontWeight.bold,
-                        color:
-                            isSelected ? Colors.white : Colors.grey),
-                  ),
-                ],
               ),
             ),
-          ),
-        );
-      }).toList(),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildIncidentSection() {
-    return Container(
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.red.withOpacity(0.05),
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: Colors.red.withOpacity(0.2)),
+  Widget _buildSliverHeader() {
+    return SliverAppBar(
+      expandedHeight: 200,
+      pinned: true,
+      backgroundColor: AppColors.navyDeep,
+      iconTheme: const IconThemeData(color: Colors.white),
+      leading: IconButton(
+        icon: const Icon(Symbols.arrow_back),
+        onPressed: () => context.pop(),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'images/brand_header.png',
+              fit: BoxFit.cover,
+              errorBuilder: (context, error, stackTrace) => Container(
+                color: AppColors.navyDeep,
+                child: const Center(
+                  child: Icon(Symbols.broken_image, color: Colors.white24, size: 40),
+                ),
+              ),
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.black26, Colors.transparent, Colors.black45],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildTitleSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      child: Text(
+        'INCIDENT REPORT',
+        style: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w900,
+          color: AppColors.navyDeep.withOpacity(0.8),
+          letterSpacing: 1.2,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildIncidentDetails() {
+    final dateFormat = DateFormat('dd.MM.yyyy');
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        decoration: BoxDecoration(
+          color: const Color(0xFFF8F9FA),
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.black12),
+        ),
+        child: Column(
+          children: [
+            _buildDetailRow(Symbols.calendar_today, 'Date:', dateFormat.format(_reportDate), true),
+            _buildDetailRow(Symbols.location_on, 'Report No.:', _reportNumber, false),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(IconData icon, String label, String value, bool showDivider) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: showDivider ? const Border(bottom: BorderSide(color: Colors.black12)) : null,
+      ),
+      child: Row(
         children: [
-          const Text('VORFALLS-DETAILS',
-              style: TextStyle(
-                  color: Colors.red,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 12)),
-          const SizedBox(height: 16),
-          _buildPillSelector(
-              'Priorität',
-              ['Niedrig', 'Mittel', 'Hoch'],
-              _severity,
-              (val) => setState(() => _severity = val)),
-          const SizedBox(height: 16),
-          Row(
-            children: [
-              const Text('Polizei informiert?',
-                  style: TextStyle(fontSize: 14)),
-              const Spacer(),
-              Switch(
-                  value: _policeNotified,
-                  onChanged: (val) =>
-                      setState(() => _policeNotified = val)),
-            ],
+          Icon(icon, size: 20, color: Colors.black54),
+          const SizedBox(width: 12),
+          Text(label, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15, color: Colors.black87)),
+          const SizedBox(width: 8),
+          Text(value, style: const TextStyle(fontSize: 15, color: Colors.black87)),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildSectionHeader(String title, {IconData? icon}) {
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(top: 30, bottom: 12, left: 20, right: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+      decoration: BoxDecoration(
+        color: const Color(0xFFC5D5F0), // Matches mockup
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 18, color: AppColors.navyDeep),
+            const SizedBox(width: 8),
+          ],
+          Text(
+            title,
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              color: AppColors.navyDeep,
+              fontSize: 16,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildPillSelector(String label, List<String> options,
-      String current, Function(String) onSelect) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label,
-            style: const TextStyle(fontSize: 12, color: Colors.grey)),
-        const SizedBox(height: 8),
-        Row(
-          children: options.map((opt) {
-            final isSelected = current == opt.toLowerCase();
-            return GestureDetector(
-              onTap: () => onSelect(opt.toLowerCase()),
-              child: Container(
-                margin: const EdgeInsets.only(right: 8),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 16, vertical: 6),
-                decoration: BoxDecoration(
-                  color: isSelected ? Colors.red : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(
-                      color: isSelected
-                          ? Colors.red
-                          : Colors.grey.withOpacity(0.3)),
-                ),
-                child: Text(
-                  opt,
-                  style: TextStyle(
-                      fontSize: 12,
-                      color:
-                          isSelected ? Colors.white : Colors.black,
-                      fontWeight: isSelected
-                          ? FontWeight.bold
-                          : FontWeight.normal),
-                ),
-              ),
-            );
-          }).toList(),
+  Widget _buildClientDetails() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
+        controller: _clientAddressController,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: AppColors.backgroundAlt,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         ),
-      ],
+      ),
     );
   }
 
-  Widget _buildPhotoSquare() {
-    return GestureDetector(
-      onTap: () {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Kamera-Funktion wird in der finalen Version verfügbar sein.')),
-        );
-      },
+  Widget _buildGuardsList() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Container(
-        height: 100,
-        width: 100,
         decoration: BoxDecoration(
-          color: Colors.black.withOpacity(0.05),
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(
-              color: Colors.black.withOpacity(0.1),
-              style: BorderStyle.solid),
+          color: AppColors.backgroundAlt,
+          borderRadius: BorderRadius.circular(8),
         ),
-        child: const Column(
+        child: Column(
+          children: _guards.map((g) => _buildGuardItem(g)).toList(),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildGuardItem(GuardEntry guard) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black12),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            flex: 4,
+            child: Text(
+              guard.name,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+            ),
+          ),
+          Expanded(
+            flex: 6,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  '${guard.startTime} - ${guard.endTime} | Pause: ${guard.pause} | Total:',
+                  style: const TextStyle(fontSize: 11, color: Colors.grey),
+                  textAlign: TextAlign.right,
+                ),
+                Text(
+                  guard.total,
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildPhotosSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          // 3 items with 2 gaps of 8px each
+          final itemWidth = (constraints.maxWidth - 16) / 3;
+          final itemHeight = itemWidth; // square aspect
+          return Row(
+            children: [
+              _buildPhotoThumb(
+                'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=400&auto=format&fit=crop',
+                itemWidth, itemHeight,
+              ),
+              const SizedBox(width: 8),
+              _buildPhotoThumb(
+                'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?q=80&w=400&auto=format&fit=crop',
+                itemWidth, itemHeight,
+              ),
+              const SizedBox(width: 8),
+              _buildAddPhotoButton(itemWidth, itemHeight),
+            ],
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildPhotoThumb(String url, double width, double height) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(8),
+        image: DecorationImage(image: NetworkImage(url), fit: BoxFit.cover),
+      ),
+    );
+  }
+
+  Widget _buildAddPhotoButton(double width, double height) {
+    return Container(
+      width: width,
+      height: height,
+      decoration: BoxDecoration(
+        color: AppColors.backgroundAlt,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.black.withOpacity(0.05)),
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(Symbols.add, color: AppColors.navyDeep.withOpacity(0.5)),
+          Text('Add', style: TextStyle(fontSize: 10, color: AppColors.navyDeep.withOpacity(0.5))),
+          Text('Photo', style: TextStyle(fontSize: 10, color: AppColors.navyDeep.withOpacity(0.5))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNotesSection() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: TextFormField(
+        controller: _notesController,
+        maxLines: 3,
+        decoration: InputDecoration(
+          hintText: 'Add note...',
+          filled: true,
+          fillColor: AppColors.backgroundAlt,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide.none,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSignatureSection() {
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text('Client Signature', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.grey)),
+          const SizedBox(height: 12),
+          GestureDetector(
+            onTap: () => setState(() => _isSigned = !_isSigned),
+            child: Container(
+              height: 100,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                border: Border(bottom: BorderSide(color: Colors.black.withOpacity(0.1), width: 1)),
+              ),
+              child: _isSigned 
+                ? Center(
+                    child: Text(
+                      'M. Muster',
+                      style: TextStyle(
+                        fontFamily: 'DancingScript', // Assuming a handwritten font is available or fallback
+                        fontSize: 32,
+                        color: AppColors.navyDeep,
+                        fontStyle: FontStyle.italic,
+                      ),
+                    ),
+                  )
+                : Center(child: Text('Tap to sign', style: TextStyle(color: Colors.black.withOpacity(0.2)))),
+            ),
+          ),
+          const SizedBox(height: 8),
+          Text('Firma Mustermann GmbH', style: TextStyle(fontSize: 12, color: Colors.black.withOpacity(0.5))),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButtons() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      child: Row(
+        children: [
+          Expanded(
+            child: _buildActionButton(
+              'Cancel', 
+              Colors.red[700]!, 
+              Symbols.close, 
+              () => context.pop()
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: _buildActionButton(
+              'Save', 
+              AppColors.navyDeep, 
+              Symbols.check_circle, 
+              _submit
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildActionButton(String label, Color color, IconData icon, VoidCallback onTap) {
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        height: 48,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.circular(8),
+          boxShadow: [
+            BoxShadow(color: color.withOpacity(0.3), blurRadius: 8, offset: const Offset(0, 4)),
+          ],
+        ),
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Symbols.add_a_photo, color: Colors.grey),
-            SizedBox(height: 4),
-            Text('Foto',
-                style: TextStyle(fontSize: 10, color: Colors.grey)),
+            Icon(icon, color: Colors.white, size: 20),
+            const SizedBox(width: 8),
+            Text(
+              label,
+              style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16),
+            ),
           ],
         ),
       ),

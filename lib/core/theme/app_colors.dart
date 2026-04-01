@@ -17,12 +17,22 @@ class AppColors {
   static const Color errorLight = Color(0xFFFFEBEE);
   static const Color errorDark = Color(0xFF93000A);
   
+  static const Color success = Color(0xFF2E7D32);
+  static const Color successContainer = Color(0xFFA5D6A7);
   static const Color successLight = Color(0xFFE8F5E9);
+  
+  static const Color warning = Color(0xFFF57C00);
   static const Color warningLight = Color(0xFFFFF3E0);
+  
   static const Color infoLight = Color(0xFFE3F2FD);
+  
+  static const Color primary = Color(0xFF005BAC);
+  static const Color primaryDark = Color(0xFF003F7A);
 
   static const Color onSurface = Color(0xFF191C1E);
+  static const Color onSurfaceVariant = Color(0xFF45474E);
   static const Color outline = Color(0xFF74777F);
+  static const Color outlineVariant = Color(0xFFC4C6D0);
   
   static const Color textDark = Color(0xFF080E14);
   static const Color textGrey = Color(0xFF636E72);

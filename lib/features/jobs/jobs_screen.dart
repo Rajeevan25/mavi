@@ -140,6 +140,7 @@ class _JobsScreenState extends ConsumerState<JobsScreen> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: 'jobs_fab',
         onPressed: () {
           context.push('/jobs/create');
         },

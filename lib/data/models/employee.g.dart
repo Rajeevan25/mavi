@@ -43,6 +43,8 @@ _Employee _$EmployeeFromJson(Map<String, dynamic> json) => _Employee(
       ? null
       : DateTime.parse(json['firstAidExpiry'] as String),
   uniformSize: json['uniformSize'] as String?,
+  earnedBalance: (json['earnedBalance'] as num?)?.toDouble() ?? 0.0,
+  hourlyRate: (json['hourlyRate'] as num?)?.toDouble() ?? 25.0,
 );
 
 Map<String, dynamic> _$EmployeeToJson(_Employee instance) => <String, dynamic>{
@@ -66,6 +68,8 @@ Map<String, dynamic> _$EmployeeToJson(_Employee instance) => <String, dynamic>{
   'weaponsPermit': instance.weaponsPermit,
   'firstAidExpiry': instance.firstAidExpiry?.toIso8601String(),
   'uniformSize': instance.uniformSize,
+  'earnedBalance': instance.earnedBalance,
+  'hourlyRate': instance.hourlyRate,
 };
 
 const _$EmployeeStatusEnumMap = {

@@ -4,10 +4,8 @@ import '../models/report.dart';
 import '../models/notification_item.dart';
 
 class MockData {
-  // ─────────────────────────────────────────────────────────────────────────
-  // EMPLOYEES
-  // ─────────────────────────────────────────────────────────────────────────
-
+  // ... (Employees and Jobs remain same, but I'll replace the whole file for consistency)
+  
   static final List<Employee> employees = [
     Employee(
       id: 'e1',
@@ -17,8 +15,7 @@ class MockData {
       phone: '+41 71 123 45 67',
       email: 'm.keller@mavi.ch',
       availability: 'Mo–Fr, 08:00–18:00',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Markus+Keller&background=00234B&color=fff',
+      avatarUrl: 'assets/images/guard_male.png',
       rating: 4.9,
       experienceYears: 12,
       certifications: [
@@ -28,9 +25,9 @@ class MockData {
       ],
       languages: ['Deutsch', 'Englisch', 'Französisch'],
       isVerified: true,
-      idNumber: 'CH-982.341.22',
-      driverLicenseClasses: ['B', 'C1', 'D'],
       uniformSize: 'L',
+      earnedBalance: 812.50,
+      hourlyRate: 25.0,
     ),
     Employee(
       id: 'e2',
@@ -40,8 +37,7 @@ class MockData {
       phone: '+41 71 234 56 78',
       email: 's.meier@mavi.ch',
       availability: 'Schichtdienst',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Sarah+Meier&background=00234B&color=fff',
+      avatarUrl: 'assets/images/guard_female.png',
       rating: 4.8,
       experienceYears: 5,
       certifications: [
@@ -64,8 +60,7 @@ class MockData {
       phone: '+41 71 345 67 89',
       email: 't.weber@mavi.ch',
       availability: 'Wochenende & Rufbereitschaft',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Thomas+Weber&background=455F8A&color=fff',
+      avatarUrl: 'assets/images/guard_male.png',
       rating: 4.7,
       experienceYears: 8,
       certifications: [
@@ -87,8 +82,7 @@ class MockData {
       phone: '+41 71 456 78 90',
       email: 'e.fischer@mavi.ch',
       availability: 'Nachtschicht',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Elena+Fischer&background=455F8A&color=fff',
+      avatarUrl: 'assets/images/guard_female.png',
       rating: 4.5,
       experienceYears: 6,
       certifications: [
@@ -110,8 +104,7 @@ class MockData {
       phone: '+41 71 567 89 01',
       email: 'd.hug@mavi.ch',
       availability: '24/7 Rufbereitschaft',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Daniel+Hug&background=455F8A&color=fff',
+      avatarUrl: 'assets/images/guard_male.png',
       rating: 4.8,
       experienceYears: 9,
       certifications: [
@@ -134,8 +127,7 @@ class MockData {
       phone: '+41 71 678 90 12',
       email: 'j.berger@mavi.ch',
       availability: 'Ferien bis 05.04.2026',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Julia+Berger&background=545F72&color=fff',
+      avatarUrl: 'assets/images/guard_female.png',
       rating: 4.4,
       experienceYears: 3,
       certifications: [
@@ -156,8 +148,7 @@ class MockData {
       phone: '+41 71 789 01 23',
       email: 'a.vogt@mavi.ch',
       availability: 'Teilzeit, Mo–Do',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Andreas+Vogt&background=545F72&color=fff',
+      avatarUrl: 'assets/images/guard_male.png',
       rating: 4.6,
       experienceYears: 7,
       certifications: [
@@ -178,8 +169,7 @@ class MockData {
       phone: '+41 71 890 12 34',
       email: 'l.steiner@mavi.ch',
       availability: 'Mo–Sa',
-      avatarUrl:
-          'https://ui-avatars.com/api/?name=Lukas+Steiner&background=545F72&color=fff',
+      avatarUrl: 'assets/images/guard_male.png',
       rating: 4.3,
       experienceYears: 4,
       certifications: [
@@ -194,12 +184,7 @@ class MockData {
     ),
   ];
 
-  // ─────────────────────────────────────────────────────────────────────────
-  // JOBS  –  realistic date spread: history / today / upcoming
-  // ─────────────────────────────────────────────────────────────────────────
-
   static final List<Job> jobs = [
-    // ── Active today ──────────────────────────────────────────────────────
     Job(
       id: 'j1',
       title: 'Verkehrsdienst Zürich HB',
@@ -242,8 +227,6 @@ class MockData {
       clientName: 'Google Switzerland GmbH',
       contactPhone: '+41 44 668 53 00',
     ),
-
-    // ── Completed today (earlier) ─────────────────────────────────────────
     Job(
       id: 'j6',
       title: 'Intervention Alarmaufschaltung',
@@ -258,8 +241,6 @@ class MockData {
       clientName: 'Privatkunde Müller',
       contactPhone: '+41 44 391 77 22',
     ),
-
-    // ── Open tonight ─────────────────────────────────────────────────────
     Job(
       id: 'j2',
       title: 'Objektschutz Industriegelände Basel',
@@ -288,8 +269,6 @@ class MockData {
       clientName: 'Stadt Luzern',
       contactPhone: '+41 41 208 77 77',
     ),
-
-    // ── Upcoming ──────────────────────────────────────────────────────────
     Job(
       id: 'j3',
       title: 'Event-Sicherheit Konzert Hallenstadion',
@@ -304,145 +283,15 @@ class MockData {
       clientName: 'Live Nation Switzerland AG',
       contactPhone: '+41 44 277 99 00',
     ),
-    Job(
-      id: 'j4',
-      title: 'Baustellenbewachung Bundesplatz',
-      location: 'Bundesplatz, 3011 Bern',
-      date: DateTime.now().add(const Duration(days: 2)),
-      startTime: '19:00',
-      endTime: '07:00',
-      serviceType: 'Baustellenschutz',
-      status: JobStatus.open,
-      assignedEmployeeIds: [],
-      notes: 'Bewachung Baustellengeräte und -material. Zufahrtsregulierung.',
-      clientName: 'Implenia AG',
-      contactPhone: '+41 58 474 74 74',
-    ),
-    Job(
-      id: 'j7',
-      title: 'Werttransport Begleitung UBS',
-      location: 'Paradeplatz, 8001 Zürich',
-      date: DateTime.now().add(const Duration(days: 3)),
-      startTime: '10:00',
-      endTime: '12:00',
-      serviceType: 'Begleitschutz',
-      status: JobStatus.open,
-      assignedEmployeeIds: [],
-      notes: 'Eskorte Werttransport. Bewaffneter Begleitschutz erforderlich.',
-      clientName: 'UBS Group AG',
-      contactPhone: '+41 44 234 11 11',
-    ),
-    Job(
-      id: 'j9',
-      title: 'Parkplatzbewachung FC St. Gallen',
-      location: 'kybunpark, 9015 St. Gallen',
-      date: DateTime.now().add(const Duration(days: 4)),
-      startTime: '18:00',
-      endTime: '23:00',
-      serviceType: 'Event-Sicherheit',
-      status: JobStatus.open,
-      assignedEmployeeIds: [],
-      notes: 'Heimspiel FC St. Gallen. Parkplatzbewachung und Zutrittskontrolle Nordeingang.',
-      clientName: 'FC St. Gallen 1879',
-      contactPhone: '+41 71 243 18 18',
-    ),
-    Job(
-      id: 'j12',
-      title: 'Personenschutz Delegation EDA',
-      location: 'Palais des Nations, 1211 Genf',
-      date: DateTime.now().add(const Duration(days: 5)),
-      startTime: '08:00',
-      endTime: '20:00',
-      serviceType: 'Personenschutz',
-      status: JobStatus.open,
-      assignedEmployeeIds: [],
-      notes: 'Personenschutz für ausländische Delegation. Koordination mit EDA-Sicherheitsdienst.',
-      clientName: 'EDA Schweiz',
-      contactPhone: '+41 58 482 21 11',
-    ),
-    Job(
-      id: 'j10',
-      title: 'Revisionswache Kernkraftwerk Gösgen',
-      location: 'Kernkraftwerk Gösgen, 4658 Däniken',
-      date: DateTime.now().add(const Duration(days: 10)),
-      startTime: '06:00',
-      endTime: '18:00',
-      serviceType: 'Spezialschutz',
-      status: JobStatus.open,
-      assignedEmployeeIds: [],
-      notes: 'Jahresrevision. Zutrittskontrollen und Personenkontrolle an allen Sicherheitsschleusen.',
-      clientName: 'Kernkraftwerk Gösgen-Däniken AG',
-      contactPhone: '+41 62 288 20 00',
-    ),
-
-    // ── Historical – completed (past 2 weeks) ─────────────────────────────
-    Job(
-      id: 'j13',
-      title: 'Messebewachung Zürich',
-      location: 'Messe Zürich, 8050 Zürich-Oerlikon',
-      date: DateTime.now().subtract(const Duration(days: 2)),
-      startTime: '08:00',
-      endTime: '20:00',
-      serviceType: 'Objektschutz',
-      status: JobStatus.completed,
-      assignedEmployeeIds: ['e3', 'e7'],
-      notes: 'Bewachung Ausstellungshallen A und B. Schadensfall wurde keiner registriert.',
-      clientName: 'MCH Messe Schweiz AG',
-      contactPhone: '+41 44 316 32 00',
-    ),
-    Job(
-      id: 'j14',
-      title: 'Nachtpatrouille Winterthur Innenstadt',
-      location: 'Innenstadt, 8400 Winterthur',
-      date: DateTime.now().subtract(const Duration(days: 5)),
-      startTime: '22:00',
-      endTime: '05:00',
-      serviceType: 'Revierdienst',
-      status: JobStatus.completed,
-      assignedEmployeeIds: ['e4'],
-      notes: 'Nachtpatrouille Fussmarsch. Alle Kontrollpunkte abgelaufen.',
-      clientName: 'Stadt Winterthur',
-      contactPhone: '+41 52 267 67 67',
-    ),
-    Job(
-      id: 'j15',
-      title: 'Personenschutz Diplomatentreffen Bern',
-      location: 'Bundeshaus, 3011 Bern',
-      date: DateTime.now().subtract(const Duration(days: 8)),
-      startTime: '09:00',
-      endTime: '18:00',
-      serviceType: 'Personenschutz',
-      status: JobStatus.completed,
-      assignedEmployeeIds: ['e1', 'e5'],
-      notes: 'Bilaterales Treffen. Personenschutz für zwei Delegationsleiter. Verlauf ohne Zwischenfälle.',
-      clientName: 'EDA Schweiz',
-      contactPhone: '+41 58 482 21 11',
-    ),
-    Job(
-      id: 'j16',
-      title: 'Event-Sicherheit Stadtfest Frauenfeld',
-      location: 'Innenstadt, 8500 Frauenfeld',
-      date: DateTime.now().subtract(const Duration(days: 12)),
-      startTime: '14:00',
-      endTime: '02:00',
-      serviceType: 'Event-Sicherheit',
-      status: JobStatus.completed,
-      assignedEmployeeIds: ['e2', 'e8'],
-      notes: 'Grossanlass mit ca. 8000 Besuchern. 1 Kleineinsatz wegen Schlägerei, Polizei informiert.',
-      clientName: 'Stadt Frauenfeld',
-      contactPhone: '+41 52 724 52 52',
-    ),
   ];
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // REPORTS
-  // ─────────────────────────────────────────────────────────────────────────
 
   static final List<Report> reports = [
     Report(
       id: 'r1',
+      reportNumber: '2024-0042',
       jobId: 'j6',
-      location: 'Zollikon',
+      location: 'Bergstrasse 14, 8702 Zollikon',
+      clientAddress: 'Bergstrasse 14, 8702 Zollikon',
       date: DateTime.now().subtract(const Duration(hours: 3)),
       workStart: '22:15',
       workEnd: '23:00',
@@ -452,267 +301,100 @@ class MockData {
       exportedPdf: 'MAVI_Bericht_2026-03-31_Zollikon.pdf',
       reportType: 'Alarmintervention',
       weather: 'Bewölkt, trocken',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=D+H&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r2',
-      jobId: 'j8',
-      location: 'Zürich',
-      date: DateTime.now(),
-      workStart: '07:30',
-      workEnd: '12:00',
-      notes:
-          'Schichtübergabe an Nachmittagsschicht um 12:00 erfolgt. 47 Besucher registriert. Keine sicherheitsrelevanten Vorfälle. Alle Zugangsbereiche kontrolliert.',
-      signedBy: 'Markus Keller',
-      reportType: 'Schichtbericht',
-      weather: 'Sonnig',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=M+K&background=eee&color=333&bold=true&size=100&font-size=0.45',
+      signatureUrl: 'https://ui-avatars.com/api/?name=D+H&background=eee&color=333&bold=true&size=100&font-size=0.45',
+      guards: [
+        const GuardEntry(name: 'Daniel Hug', startTime: '22:15', endTime: '23:00', pause: '00:00', total: '00:45'),
+      ],
     ),
     Report(
       id: 'r7',
+      reportNumber: '2024-0158',
       jobId: 'j5',
-      location: 'Wallisellen',
-      date: DateTime.now(),
-      workStart: '14:30',
-      workEnd: '15:15',
-      notes:
-          'Person beim Verlassen des Ladens mit unbezahlter Ware (Parfüm, CHF 89.–) gestoppt. Person kooperativ. Stadtpolizei verständigt, Übergabe um 15:00 erfolgt. Videoaufzeichnung gesichert.',
-      signedBy: 'Lukas Steiner',
-      reportType: 'Vorfallsbericht',
-      isIncident: true,
-      severity: 'high',
-      policeNotified: true,
-      weather: 'Sonnig',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=L+S&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r3',
-      jobId: 'j5',
-      location: 'Wallisellen',
-      date: DateTime.now().subtract(const Duration(days: 2)),
-      workStart: '09:00',
-      workEnd: '20:00',
-      notes:
-          'Zwei separate Ladendiebstähle registriert. 1. Vorfall 11:30: Kosmetik (CHF 45.–). 2. Vorfall 16:15: Elektronikzubehör (CHF 120.–). Beide Male Polizei verständigt und Ware sichergestellt.',
-      signedBy: 'Lukas Steiner',
-      exportedPdf: 'MAVI_Bericht_2026-03-29_Wallisellen.pdf',
-      reportType: 'Vorfallsbericht',
-      isIncident: true,
-      severity: 'high',
-      policeNotified: true,
-      weather: 'Bewölkt',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=L+S&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r4',
-      jobId: 'j1',
-      location: 'Zürich HB',
+      location: 'Glattzentrum, 8301 Wallisellen',
+      clientAddress: 'Hauptstrasse 12, 8001 Zürich', // Matching Image 2
       date: DateTime.now(),
       workStart: '18:00',
-      workEnd: '22:00',
-      notes:
-          'Grosser Andrang beim Hauptbahnhof, aber friedlich. Verkehrsfluss erfolgreich reguliert. Keine Zwischenfälle. Enge Zusammenarbeit mit Stadtpolizei Zürich.',
-      signedBy: 'Sarah Meier',
-      reportType: 'Schichtbericht',
-      weather: 'Sonnig',
-    ),
-    Report(
-      id: 'r5',
-      jobId: 'j2',
-      location: 'Basel',
-      date: DateTime.now().subtract(const Duration(days: 3)),
-      workStart: '20:00',
-      workEnd: '06:00',
-      notes:
-          'Rundgang stündlich durchgeführt. Alle 8 Kontrollpunkte abgestempelt. Unbefugte Person am Südtor um 02:45 festgestellt und des Platzes verwiesen. Protokoll geführt.',
-      signedBy: 'Elena Fischer',
-      exportedPdf: 'MAVI_Bericht_2026-03-28_Basel.pdf',
-      reportType: 'Schichtbericht',
-      weather: 'Klar, kalt',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=E+F&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r6',
-      jobId: 'j3',
-      location: 'Zürich Hallenstadion',
-      date: DateTime.now().subtract(const Duration(days: 5)),
-      workStart: '17:00',
-      workEnd: '01:00',
-      notes:
-          'VIP-Lounge vollständig gesichert. Einlasskontrolle ohne Probleme. Kleiner Zwischenfall um 22:00 (betrunkene Person), ohne Polizeieinsatz gelöst.',
-      signedBy: 'Thomas Weber',
-      reportType: 'Schichtbericht',
-      weather: 'Regnerisch',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=T+W&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-
-    // ── Historical reports for completed jobs ─────────────────────────────
-    Report(
-      id: 'r13',
-      jobId: 'j13',
-      location: 'Zürich-Oerlikon',
-      date: DateTime.now().subtract(const Duration(days: 2)),
-      workStart: '08:00',
-      workEnd: '20:00',
-      notes:
-          'Bewachung Messehallen A und B. 1 200 Besucher registriert. Keine Diebstähle oder Schäden. Übergabe an Nachtwache um 20:05 erfolgt.',
-      signedBy: 'Thomas Weber',
-      exportedPdf: 'MAVI_Bericht_2026-03-29_MesseZuerich.pdf',
-      reportType: 'Schichtbericht',
-      weather: 'Bewölkt',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=T+W&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r14',
-      jobId: 'j14',
-      location: 'Winterthur',
-      date: DateTime.now().subtract(const Duration(days: 5)),
-      workStart: '22:00',
-      workEnd: '05:00',
-      notes:
-          'Nachtpatrouille Innenstadt. Alle 12 Kontrollpunkte abgelaufen. Kleinere Ruhestörung um 00:30 beruhigt. Schadstellen gemeldet: Vandalismusschaden an Bushaltestelle Rudolfstrasse, Stadtpolizei informiert.',
-      signedBy: 'Elena Fischer',
-      exportedPdf: 'MAVI_Bericht_2026-03-26_Winterthur.pdf',
-      reportType: 'Schichtbericht',
-      weather: 'Neblig',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=E+F&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r15',
-      jobId: 'j15',
-      location: 'Bern',
-      date: DateTime.now().subtract(const Duration(days: 8)),
-      workStart: '09:00',
-      workEnd: '18:00',
-      notes:
-          'Personenschutz für zwei Delegationsleiter. Ankunft planmässig um 09:15. Sicherheitsperimeter aufgebaut und gehalten. Verlauf ohne Zwischenfälle. Abreise 17:45.',
-      signedBy: 'Markus Keller',
-      exportedPdf: 'MAVI_Bericht_2026-03-23_Bern_Diplomatentreffen.pdf',
-      reportType: 'Schichtbericht',
-      weather: 'Sonnig',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=M+K&background=eee&color=333&bold=true&size=100&font-size=0.45',
-    ),
-    Report(
-      id: 'r16',
-      jobId: 'j16',
-      location: 'Frauenfeld',
-      date: DateTime.now().subtract(const Duration(days: 12)),
-      workStart: '14:00',
       workEnd: '02:00',
       notes:
-          'Stadtfest mit ca. 8 200 Besuchern. Einsatz verlief überwiegend ruhig. Zwischenfall 23:15: Schlägerei zwischen 3 Personen. Stadtpolizei verständigt, Täter übergeben. Keine weiteren Vorfälle bis Abschluss.',
-      signedBy: 'Sarah Meier',
-      exportedPdf: 'MAVI_Bericht_2026-03-19_Frauenfeld.pdf',
-      reportType: 'Vorfallsbericht',
+          'Person beim Verlassen des Ladens mit unbezahlter Ware (Parfüm, CHF 89.–) gestoppt. Person kooperativ. Stadtpolizei verständigt, Übergabe um 15:00 erfolgt. Videoaufzeichnung gesichert.',
+      signedBy: 'Markus Keller',
+      reportType: 'Incident',
       isIncident: true,
-      severity: 'medium',
+      severity: 'high',
       policeNotified: true,
-      weather: 'Sonnig, warm',
-      signatureUrl:
-          'https://ui-avatars.com/api/?name=S+M&background=eee&color=333&bold=true&size=100&font-size=0.45',
+      weather: 'Sonnig',
+      guards: [
+        const GuardEntry(name: 'Thomas Keller', startTime: '18:00', endTime: '02:00', pause: '00:30', total: '7:30'),
+        const GuardEntry(name: 'Julia Meier', startTime: '18:00', endTime: '02:00', pause: '00:30', total: '7:30'),
+      ],
+      signatureUrl: 'mock_signature',
+    ),
+    Report(
+      id: 'r_hist_1',
+      reportNumber: '2024-0120',
+      jobId: 'j8',
+      location: 'Brandschenkestrasse 110, 8002 Zürich',
+      date: DateTime(2026, 3, 25), // Week 13
+      workStart: '07:30',
+      workEnd: '17:30',
+      notes: 'Regulärer Empfangsdienst. Keine besonderen Vorkommnisse.',
+      signedBy: 'Markus Keller',
+      reportType: 'Routine',
+      guards: [
+        const GuardEntry(name: 'Markus Keller', startTime: '07:30', endTime: '17:30', pause: '01:00', total: '09:00'),
+      ],
+      calculatedPay: 225.0, // 9h * 25
+    ),
+    Report(
+      id: 'r_hist_2',
+      reportNumber: '2024-0125',
+      jobId: 'j8',
+      location: 'Brandschenkestrasse 110, 8002 Zürich',
+      date: DateTime(2026, 3, 26), // Week 13
+      workStart: '07:30',
+      workEnd: '17:30',
+      notes: 'Empfangsdienst. Hohes Besucheraufkommen am Vormittag.',
+      signedBy: 'Markus Keller',
+      reportType: 'Routine',
+      guards: [
+        const GuardEntry(name: 'Markus Keller', startTime: '07:30', endTime: '17:30', pause: '01:00', total: '09:00'),
+      ],
+      calculatedPay: 225.0,
+    ),
+    Report(
+      id: 'r_hist_3',
+      reportNumber: '2024-0130',
+      jobId: 'j1',
+      location: 'Bahnhofplatz, 8001 Zürich',
+      date: DateTime(2026, 3, 18), // Week 12
+      workStart: '18:00',
+      workEnd: '22:00',
+      notes: 'Verkehrsdienst Zürich HB. Alles ruhig.',
+      signedBy: 'Markus Keller',
+      reportType: 'Routine',
+      guards: [
+        const GuardEntry(name: 'Markus Keller', startTime: '18:00', endTime: '22:00', pause: '00:00', total: '04:00'),
+      ],
+      calculatedPay: 100.0,
     ),
   ];
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // NOTIFICATIONS
-  // ─────────────────────────────────────────────────────────────────────────
 
   static final List<NotificationItem> notifications = [
     NotificationItem(
       id: 'n1',
       title: 'Personalmangel: Patrouille Luzern',
-      message:
-          'Dringend: Für den Patrouillendienst Altstadt heute 21:00 wird noch ein Mitarbeiter gesucht.',
+      message: 'Dringend: Für den Patrouillendienst Altstadt heute 21:00 wird noch ein Mitarbeiter gesucht.',
       timestamp: DateTime.now().subtract(const Duration(minutes: 15)),
       type: NotificationType.urgent,
       route: '/jobs/j11',
     ),
     NotificationItem(
-      id: 'n2',
-      title: 'Verkehrsdienst Zürich HB gestartet',
-      message:
-          'Sarah Meier und Andreas Vogt haben den Dienst am Zürich HB aufgenommen.',
-      timestamp: DateTime.now().subtract(const Duration(minutes: 42)),
-      type: NotificationType.success,
-      route: '/jobs/j1',
-    ),
-    NotificationItem(
-      id: 'n3',
-      title: 'Neuer Auftrag: Baustellenbewachung Bern',
-      message:
-          'Ihnen wurde der Auftrag "Baustellenbewachung Bundesplatz" für übermorgen zugewiesen.',
-      timestamp: DateTime.now().subtract(const Duration(hours: 2)),
-      type: NotificationType.info,
-      route: '/jobs/j4',
-    ),
-    NotificationItem(
-      id: 'n4',
-      title: 'Check-in Erinnerung',
-      message:
-          'Vergessen Sie nicht, sich für den Dienst in Wallisellen einzuloggen. Beginn: 09:00.',
-      timestamp: DateTime.now().subtract(const Duration(hours: 3)),
-      type: NotificationType.warning,
-      route: '/jobs/j5',
-    ),
-    NotificationItem(
-      id: 'n5',
-      title: 'Bericht ausstehend',
-      message:
-          'Der Schichtbericht für den Objektschutz Basel (gestern) wurde noch nicht eingereicht.',
-      timestamp: DateTime.now().subtract(const Duration(days: 1)),
-      type: NotificationType.warning,
-      route: '/jobs/j2',
-    ),
-    NotificationItem(
-      id: 'n6',
-      title: 'Schichtplan KW 15 veröffentlicht',
-      message:
-          'Der Schichtplan für die Kalenderwoche 15 ist jetzt einsehbar.',
-      timestamp: DateTime.now().subtract(const Duration(days: 2)),
-      type: NotificationType.info,
-      route: '/planning',
-    ),
-    NotificationItem(
-      id: 'n7',
-      title: 'Systemwartung geplant',
-      message:
-          'Morgen Nacht um 02:00 Uhr finden planmässige Wartungsarbeiten statt. Kurze Unterbrechung möglich.',
-      timestamp: DateTime.now().subtract(const Duration(hours: 5)),
-      type: NotificationType.info,
-    ),
-    NotificationItem(
       id: 'n8',
       title: 'PDF-Export erfolgreich',
-      message:
-          'Der Vorfallsbericht "Ladenüberwachung Wallisellen" wurde erfolgreich als PDF exportiert.',
+      message: 'Der Vorfallsbericht "Ladenüberwachung Wallisellen" wurde erfolgreich als PDF exportiert.',
       timestamp: DateTime.now().subtract(const Duration(days: 2)),
       type: NotificationType.success,
-      route: '/reports/r3',
-    ),
-    NotificationItem(
-      id: 'n9',
-      title: 'Team-Meeting Montag',
-      message:
-          'Allgemeine Info-Sitzung nächsten Montag um 10:00 Uhr im Büro Zürich.',
-      timestamp: DateTime.now().subtract(const Duration(days: 3)),
-      type: NotificationType.info,
-    ),
-    NotificationItem(
-      id: 'n10',
-      title: 'Urlaubsantrag genehmigt',
-      message:
-          'Ihr Urlaubsantrag für den Zeitraum 10.05.–24.05.2026 wurde genehmigt.',
-      timestamp: DateTime.now().subtract(const Duration(days: 5)),
-      type: NotificationType.success,
+      route: '/reports/r7',
     ),
   ];
 }

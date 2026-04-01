@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
 import 'package:go_router/go_router.dart';
+import '../../core/providers/auth_provider.dart';
 import '../../core/widgets/kpi_card.dart';
 import '../../core/widgets/map_placeholder.dart';
 import '../../core/widgets/skeleton_loader.dart';
@@ -175,26 +176,41 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
             ],
           ),
         ),
-        Stack(
+        Row(
           children: [
-            IconButton(
-              onPressed: () => context.push('/notifications'),
-              icon: const Icon(Symbols.notifications, color: AppColors.primaryContainer),
-            ),
-            if (unreadCount > 0)
-              Positioned(
-                top: 10,
-                right: 10,
-                child: Container(
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    color: AppColors.error,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: Colors.white, width: 2),
-                  ),
-                ),
+            // Switch portal button
+            Tooltip(
+              message: 'Portal wechseln',
+              child: IconButton(
+                onPressed: () {
+                  ref.read(authProvider.notifier).state = UserRole.guest;
+                  context.go('/login');
+                },
+                icon: const Icon(Symbols.switch_account, color: AppColors.primaryContainer),
               ),
+            ),
+            Stack(
+              children: [
+                IconButton(
+                  onPressed: () => context.push('/notifications'),
+                  icon: const Icon(Symbols.notifications, color: AppColors.primaryContainer),
+                ),
+                if (unreadCount > 0)
+                  Positioned(
+                    top: 10,
+                    right: 10,
+                    child: Container(
+                      width: 8,
+                      height: 8,
+                      decoration: BoxDecoration(
+                        color: AppColors.error,
+                        shape: BoxShape.circle,
+                        border: Border.all(color: Colors.white, width: 2),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ],
         ),
       ],
@@ -421,9 +437,9 @@ class _DashboardScreenState extends ConsumerState<DashboardScreen> {
         _buildActionButton(context, Symbols.manage_accounts, 'Personal',
             AppColors.card3, AppColors.textDark,
             () => context.go('/employees')),
-        _buildActionButton(context, Symbols.calendar_view_week, 'Schichtplan',
-            AppColors.card4, AppColors.navyLight,
-            () => context.go('/planning')),
+        _buildActionButton(context, Symbols.payments, 'Abrechnung',
+            AppColors.successContainer, AppColors.success,
+            () => context.push('/payroll')),
       ],
     );
   }

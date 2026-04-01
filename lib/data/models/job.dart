@@ -25,6 +25,8 @@ abstract class Job with _$Job {
     String? notes,
     String? clientName,
     String? contactPhone,
+    double? targetLatitude,
+    double? targetLongitude,
   }) = _Job;
 
   factory Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);

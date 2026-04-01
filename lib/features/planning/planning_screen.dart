@@ -95,6 +95,17 @@ class _PlanningScreenState extends ConsumerState<PlanningScreen> {
             icon: const Icon(Symbols.calendar_today),
             tooltip: 'Datum wählen',
           ),
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: GestureDetector(
+              onTap: () => context.push('/profile'),
+              child: const CircleAvatar(
+                radius: 16,
+                backgroundImage: NetworkImage(
+                    'https://lh3.googleusercontent.com/aida-public/AB6AXuBBKq3dXmpR10eWP7wuQUbzN_tjAg3060UvIGXNCm6ywWZtG_Ex7UONsRicBCkApqPbvoygv_f6-OFTbvIeq_gRU4L5XtuAT9ITT9AB24YDi2_pMFI2BZGKjsgNV3b9upabNKU1MiHBDujNU6naeU8kxQIJkqfgOR1MGlB1I0icEAm7uVzsqCoCSuvhxkov9zw5fSaCHlfgUiOBRBrWroUg3fsXUWaBZ63IgV3OvZq-VHMAy5tTZx-c3mizQNbbA-oODoOvmAuwx3E'),
+              ),
+            ),
+          ),
         ],
       ),
       body: SingleChildScrollView(

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Employee {
 
- String get id; String get name; String get role; EmployeeStatus get status; String get phone; String get email; String get availability; String? get avatarUrl; double get rating; int get experienceYears; List<String> get certifications; List<String> get languages; String? get emergencyContact; bool get isVerified; String? get idNumber; DateTime? get criminalRecordDate; List<String> get driverLicenseClasses; bool get weaponsPermit; DateTime? get firstAidExpiry; String? get uniformSize;
+ String get id; String get name; String get role; EmployeeStatus get status; String get phone; String get email; String get availability; String? get avatarUrl; double get rating; int get experienceYears; List<String> get certifications; List<String> get languages; String? get emergencyContact; bool get isVerified; String? get idNumber; DateTime? get criminalRecordDate; List<String> get driverLicenseClasses; bool get weaponsPermit; DateTime? get firstAidExpiry; String? get uniformSize; double get earnedBalance; double get hourlyRate;
 /// Create a copy of Employee
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $EmployeeCopyWith<Employee> get copyWith => _$EmployeeCopyWithImpl<Employee>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Employee&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.experienceYears, experienceYears) || other.experienceYears == experienceYears)&&const DeepCollectionEquality().equals(other.certifications, certifications)&&const DeepCollectionEquality().equals(other.languages, languages)&&(identical(other.emergencyContact, emergencyContact) || other.emergencyContact == emergencyContact)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.idNumber, idNumber) || other.idNumber == idNumber)&&(identical(other.criminalRecordDate, criminalRecordDate) || other.criminalRecordDate == criminalRecordDate)&&const DeepCollectionEquality().equals(other.driverLicenseClasses, driverLicenseClasses)&&(identical(other.weaponsPermit, weaponsPermit) || other.weaponsPermit == weaponsPermit)&&(identical(other.firstAidExpiry, firstAidExpiry) || other.firstAidExpiry == firstAidExpiry)&&(identical(other.uniformSize, uniformSize) || other.uniformSize == uniformSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Employee&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.experienceYears, experienceYears) || other.experienceYears == experienceYears)&&const DeepCollectionEquality().equals(other.certifications, certifications)&&const DeepCollectionEquality().equals(other.languages, languages)&&(identical(other.emergencyContact, emergencyContact) || other.emergencyContact == emergencyContact)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.idNumber, idNumber) || other.idNumber == idNumber)&&(identical(other.criminalRecordDate, criminalRecordDate) || other.criminalRecordDate == criminalRecordDate)&&const DeepCollectionEquality().equals(other.driverLicenseClasses, driverLicenseClasses)&&(identical(other.weaponsPermit, weaponsPermit) || other.weaponsPermit == weaponsPermit)&&(identical(other.firstAidExpiry, firstAidExpiry) || other.firstAidExpiry == firstAidExpiry)&&(identical(other.uniformSize, uniformSize) || other.uniformSize == uniformSize)&&(identical(other.earnedBalance, earnedBalance) || other.earnedBalance == earnedBalance)&&(identical(other.hourlyRate, hourlyRate) || other.hourlyRate == hourlyRate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,name,role,status,phone,email,availability,avatarUrl,rating,experienceYears,const DeepCollectionEquality().hash(certifications),const DeepCollectionEquality().hash(languages),emergencyContact,isVerified,idNumber,criminalRecordDate,const DeepCollectionEquality().hash(driverLicenseClasses),weaponsPermit,firstAidExpiry,uniformSize]);
+int get hashCode => Object.hashAll([runtimeType,id,name,role,status,phone,email,availability,avatarUrl,rating,experienceYears,const DeepCollectionEquality().hash(certifications),const DeepCollectionEquality().hash(languages),emergencyContact,isVerified,idNumber,criminalRecordDate,const DeepCollectionEquality().hash(driverLicenseClasses),weaponsPermit,firstAidExpiry,uniformSize,earnedBalance,hourlyRate]);
 
 @override
 String toString() {
-  return 'Employee(id: $id, name: $name, role: $role, status: $status, phone: $phone, email: $email, availability: $availability, avatarUrl: $avatarUrl, rating: $rating, experienceYears: $experienceYears, certifications: $certifications, languages: $languages, emergencyContact: $emergencyContact, isVerified: $isVerified, idNumber: $idNumber, criminalRecordDate: $criminalRecordDate, driverLicenseClasses: $driverLicenseClasses, weaponsPermit: $weaponsPermit, firstAidExpiry: $firstAidExpiry, uniformSize: $uniformSize)';
+  return 'Employee(id: $id, name: $name, role: $role, status: $status, phone: $phone, email: $email, availability: $availability, avatarUrl: $avatarUrl, rating: $rating, experienceYears: $experienceYears, certifications: $certifications, languages: $languages, emergencyContact: $emergencyContact, isVerified: $isVerified, idNumber: $idNumber, criminalRecordDate: $criminalRecordDate, driverLicenseClasses: $driverLicenseClasses, weaponsPermit: $weaponsPermit, firstAidExpiry: $firstAidExpiry, uniformSize: $uniformSize, earnedBalance: $earnedBalance, hourlyRate: $hourlyRate)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $EmployeeCopyWith<$Res>  {
   factory $EmployeeCopyWith(Employee value, $Res Function(Employee) _then) = _$EmployeeCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, String role, EmployeeStatus status, String phone, String email, String availability, String? avatarUrl, double rating, int experienceYears, List<String> certifications, List<String> languages, String? emergencyContact, bool isVerified, String? idNumber, DateTime? criminalRecordDate, List<String> driverLicenseClasses, bool weaponsPermit, DateTime? firstAidExpiry, String? uniformSize
+ String id, String name, String role, EmployeeStatus status, String phone, String email, String availability, String? avatarUrl, double rating, int experienceYears, List<String> certifications, List<String> languages, String? emergencyContact, bool isVerified, String? idNumber, DateTime? criminalRecordDate, List<String> driverLicenseClasses, bool weaponsPermit, DateTime? firstAidExpiry, String? uniformSize, double earnedBalance, double hourlyRate
 });
 
 
@@ -65,7 +65,7 @@ class _$EmployeeCopyWithImpl<$Res>
 
 /// Create a copy of Employee
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? role = null,Object? status = null,Object? phone = null,Object? email = null,Object? availability = null,Object? avatarUrl = freezed,Object? rating = null,Object? experienceYears = null,Object? certifications = null,Object? languages = null,Object? emergencyContact = freezed,Object? isVerified = null,Object? idNumber = freezed,Object? criminalRecordDate = freezed,Object? driverLicenseClasses = null,Object? weaponsPermit = null,Object? firstAidExpiry = freezed,Object? uniformSize = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? role = null,Object? status = null,Object? phone = null,Object? email = null,Object? availability = null,Object? avatarUrl = freezed,Object? rating = null,Object? experienceYears = null,Object? certifications = null,Object? languages = null,Object? emergencyContact = freezed,Object? isVerified = null,Object? idNumber = freezed,Object? criminalRecordDate = freezed,Object? driverLicenseClasses = null,Object? weaponsPermit = null,Object? firstAidExpiry = freezed,Object? uniformSize = freezed,Object? earnedBalance = null,Object? hourlyRate = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,9 @@ as DateTime?,driverLicenseClasses: null == driverLicenseClasses ? _self.driverLi
 as List<String>,weaponsPermit: null == weaponsPermit ? _self.weaponsPermit : weaponsPermit // ignore: cast_nullable_to_non_nullable
 as bool,firstAidExpiry: freezed == firstAidExpiry ? _self.firstAidExpiry : firstAidExpiry // ignore: cast_nullable_to_non_nullable
 as DateTime?,uniformSize: freezed == uniformSize ? _self.uniformSize : uniformSize // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,earnedBalance: null == earnedBalance ? _self.earnedBalance : earnedBalance // ignore: cast_nullable_to_non_nullable
+as double,hourlyRate: null == hourlyRate ? _self.hourlyRate : hourlyRate // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
 
@@ -172,10 +174,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize,  double earnedBalance,  double hourlyRate)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Employee() when $default != null:
-return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize);case _:
+return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize,_that.earnedBalance,_that.hourlyRate);case _:
   return orElse();
 
 }
@@ -193,10 +195,10 @@ return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.em
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize,  double earnedBalance,  double hourlyRate)  $default,) {final _that = this;
 switch (_that) {
 case _Employee():
-return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize);case _:
+return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize,_that.earnedBalance,_that.hourlyRate);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -213,10 +215,10 @@ return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.em
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  String role,  EmployeeStatus status,  String phone,  String email,  String availability,  String? avatarUrl,  double rating,  int experienceYears,  List<String> certifications,  List<String> languages,  String? emergencyContact,  bool isVerified,  String? idNumber,  DateTime? criminalRecordDate,  List<String> driverLicenseClasses,  bool weaponsPermit,  DateTime? firstAidExpiry,  String? uniformSize,  double earnedBalance,  double hourlyRate)?  $default,) {final _that = this;
 switch (_that) {
 case _Employee() when $default != null:
-return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize);case _:
+return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.email,_that.availability,_that.avatarUrl,_that.rating,_that.experienceYears,_that.certifications,_that.languages,_that.emergencyContact,_that.isVerified,_that.idNumber,_that.criminalRecordDate,_that.driverLicenseClasses,_that.weaponsPermit,_that.firstAidExpiry,_that.uniformSize,_that.earnedBalance,_that.hourlyRate);case _:
   return null;
 
 }
@@ -228,7 +230,7 @@ return $default(_that.id,_that.name,_that.role,_that.status,_that.phone,_that.em
 @JsonSerializable()
 
 class _Employee implements Employee {
-  const _Employee({required this.id, required this.name, required this.role, this.status = EmployeeStatus.available, required this.phone, required this.email, required this.availability, this.avatarUrl, this.rating = 5.0, this.experienceYears = 0, final  List<String> certifications = const [], final  List<String> languages = const ['Deutsch'], this.emergencyContact, this.isVerified = false, this.idNumber, this.criminalRecordDate, final  List<String> driverLicenseClasses = const [], this.weaponsPermit = false, this.firstAidExpiry, this.uniformSize}): _certifications = certifications,_languages = languages,_driverLicenseClasses = driverLicenseClasses;
+  const _Employee({required this.id, required this.name, required this.role, this.status = EmployeeStatus.available, required this.phone, required this.email, required this.availability, this.avatarUrl, this.rating = 5.0, this.experienceYears = 0, final  List<String> certifications = const [], final  List<String> languages = const ['Deutsch'], this.emergencyContact, this.isVerified = false, this.idNumber, this.criminalRecordDate, final  List<String> driverLicenseClasses = const [], this.weaponsPermit = false, this.firstAidExpiry, this.uniformSize, this.earnedBalance = 0.0, this.hourlyRate = 25.0}): _certifications = certifications,_languages = languages,_driverLicenseClasses = driverLicenseClasses;
   factory _Employee.fromJson(Map<String, dynamic> json) => _$EmployeeFromJson(json);
 
 @override final  String id;
@@ -269,6 +271,8 @@ class _Employee implements Employee {
 @override@JsonKey() final  bool weaponsPermit;
 @override final  DateTime? firstAidExpiry;
 @override final  String? uniformSize;
+@override@JsonKey() final  double earnedBalance;
+@override@JsonKey() final  double hourlyRate;
 
 /// Create a copy of Employee
 /// with the given fields replaced by the non-null parameter values.
@@ -283,16 +287,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Employee&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.experienceYears, experienceYears) || other.experienceYears == experienceYears)&&const DeepCollectionEquality().equals(other._certifications, _certifications)&&const DeepCollectionEquality().equals(other._languages, _languages)&&(identical(other.emergencyContact, emergencyContact) || other.emergencyContact == emergencyContact)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.idNumber, idNumber) || other.idNumber == idNumber)&&(identical(other.criminalRecordDate, criminalRecordDate) || other.criminalRecordDate == criminalRecordDate)&&const DeepCollectionEquality().equals(other._driverLicenseClasses, _driverLicenseClasses)&&(identical(other.weaponsPermit, weaponsPermit) || other.weaponsPermit == weaponsPermit)&&(identical(other.firstAidExpiry, firstAidExpiry) || other.firstAidExpiry == firstAidExpiry)&&(identical(other.uniformSize, uniformSize) || other.uniformSize == uniformSize));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Employee&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&(identical(other.role, role) || other.role == role)&&(identical(other.status, status) || other.status == status)&&(identical(other.phone, phone) || other.phone == phone)&&(identical(other.email, email) || other.email == email)&&(identical(other.availability, availability) || other.availability == availability)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.experienceYears, experienceYears) || other.experienceYears == experienceYears)&&const DeepCollectionEquality().equals(other._certifications, _certifications)&&const DeepCollectionEquality().equals(other._languages, _languages)&&(identical(other.emergencyContact, emergencyContact) || other.emergencyContact == emergencyContact)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.idNumber, idNumber) || other.idNumber == idNumber)&&(identical(other.criminalRecordDate, criminalRecordDate) || other.criminalRecordDate == criminalRecordDate)&&const DeepCollectionEquality().equals(other._driverLicenseClasses, _driverLicenseClasses)&&(identical(other.weaponsPermit, weaponsPermit) || other.weaponsPermit == weaponsPermit)&&(identical(other.firstAidExpiry, firstAidExpiry) || other.firstAidExpiry == firstAidExpiry)&&(identical(other.uniformSize, uniformSize) || other.uniformSize == uniformSize)&&(identical(other.earnedBalance, earnedBalance) || other.earnedBalance == earnedBalance)&&(identical(other.hourlyRate, hourlyRate) || other.hourlyRate == hourlyRate));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,name,role,status,phone,email,availability,avatarUrl,rating,experienceYears,const DeepCollectionEquality().hash(_certifications),const DeepCollectionEquality().hash(_languages),emergencyContact,isVerified,idNumber,criminalRecordDate,const DeepCollectionEquality().hash(_driverLicenseClasses),weaponsPermit,firstAidExpiry,uniformSize]);
+int get hashCode => Object.hashAll([runtimeType,id,name,role,status,phone,email,availability,avatarUrl,rating,experienceYears,const DeepCollectionEquality().hash(_certifications),const DeepCollectionEquality().hash(_languages),emergencyContact,isVerified,idNumber,criminalRecordDate,const DeepCollectionEquality().hash(_driverLicenseClasses),weaponsPermit,firstAidExpiry,uniformSize,earnedBalance,hourlyRate]);
 
 @override
 String toString() {
-  return 'Employee(id: $id, name: $name, role: $role, status: $status, phone: $phone, email: $email, availability: $availability, avatarUrl: $avatarUrl, rating: $rating, experienceYears: $experienceYears, certifications: $certifications, languages: $languages, emergencyContact: $emergencyContact, isVerified: $isVerified, idNumber: $idNumber, criminalRecordDate: $criminalRecordDate, driverLicenseClasses: $driverLicenseClasses, weaponsPermit: $weaponsPermit, firstAidExpiry: $firstAidExpiry, uniformSize: $uniformSize)';
+  return 'Employee(id: $id, name: $name, role: $role, status: $status, phone: $phone, email: $email, availability: $availability, avatarUrl: $avatarUrl, rating: $rating, experienceYears: $experienceYears, certifications: $certifications, languages: $languages, emergencyContact: $emergencyContact, isVerified: $isVerified, idNumber: $idNumber, criminalRecordDate: $criminalRecordDate, driverLicenseClasses: $driverLicenseClasses, weaponsPermit: $weaponsPermit, firstAidExpiry: $firstAidExpiry, uniformSize: $uniformSize, earnedBalance: $earnedBalance, hourlyRate: $hourlyRate)';
 }
 
 
@@ -303,7 +307,7 @@ abstract mixin class _$EmployeeCopyWith<$Res> implements $EmployeeCopyWith<$Res>
   factory _$EmployeeCopyWith(_Employee value, $Res Function(_Employee) _then) = __$EmployeeCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, String role, EmployeeStatus status, String phone, String email, String availability, String? avatarUrl, double rating, int experienceYears, List<String> certifications, List<String> languages, String? emergencyContact, bool isVerified, String? idNumber, DateTime? criminalRecordDate, List<String> driverLicenseClasses, bool weaponsPermit, DateTime? firstAidExpiry, String? uniformSize
+ String id, String name, String role, EmployeeStatus status, String phone, String email, String availability, String? avatarUrl, double rating, int experienceYears, List<String> certifications, List<String> languages, String? emergencyContact, bool isVerified, String? idNumber, DateTime? criminalRecordDate, List<String> driverLicenseClasses, bool weaponsPermit, DateTime? firstAidExpiry, String? uniformSize, double earnedBalance, double hourlyRate
 });
 
 
@@ -320,7 +324,7 @@ class __$EmployeeCopyWithImpl<$Res>
 
 /// Create a copy of Employee
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? role = null,Object? status = null,Object? phone = null,Object? email = null,Object? availability = null,Object? avatarUrl = freezed,Object? rating = null,Object? experienceYears = null,Object? certifications = null,Object? languages = null,Object? emergencyContact = freezed,Object? isVerified = null,Object? idNumber = freezed,Object? criminalRecordDate = freezed,Object? driverLicenseClasses = null,Object? weaponsPermit = null,Object? firstAidExpiry = freezed,Object? uniformSize = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? role = null,Object? status = null,Object? phone = null,Object? email = null,Object? availability = null,Object? avatarUrl = freezed,Object? rating = null,Object? experienceYears = null,Object? certifications = null,Object? languages = null,Object? emergencyContact = freezed,Object? isVerified = null,Object? idNumber = freezed,Object? criminalRecordDate = freezed,Object? driverLicenseClasses = null,Object? weaponsPermit = null,Object? firstAidExpiry = freezed,Object? uniformSize = freezed,Object? earnedBalance = null,Object? hourlyRate = null,}) {
   return _then(_Employee(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -342,7 +346,9 @@ as DateTime?,driverLicenseClasses: null == driverLicenseClasses ? _self._driverL
 as List<String>,weaponsPermit: null == weaponsPermit ? _self.weaponsPermit : weaponsPermit // ignore: cast_nullable_to_non_nullable
 as bool,firstAidExpiry: freezed == firstAidExpiry ? _self.firstAidExpiry : firstAidExpiry // ignore: cast_nullable_to_non_nullable
 as DateTime?,uniformSize: freezed == uniformSize ? _self.uniformSize : uniformSize // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,earnedBalance: null == earnedBalance ? _self.earnedBalance : earnedBalance // ignore: cast_nullable_to_non_nullable
+as double,hourlyRate: null == hourlyRate ? _self.hourlyRate : hourlyRate // ignore: cast_nullable_to_non_nullable
+as double,
   ));
 }
 

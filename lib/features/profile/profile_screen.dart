@@ -1,22 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
+import 'package:mavi_security/core/providers/auth_provider.dart';
 import 'package:mavi_security/core/theme/app_colors.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends ConsumerWidget {
   const ProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text('Profil & Einstellungen')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(24),
         child: Column(
           children: [
-            const CircleAvatar(
+            CircleAvatar(
               radius: 50,
               backgroundColor: AppColors.primaryContainer,
-              child: Icon(Symbols.person, size: 48, color: Colors.white),
+              backgroundImage: const AssetImage('images/guard_male.png'),
             ),
             const SizedBox(height: 16),
             const Text(
@@ -39,7 +42,10 @@ class ProfileScreen extends StatelessWidget {
             _buildSettingItem(Symbols.help, 'Support & Hilfe'),
             const SizedBox(height: 32),
             TextButton.icon(
-              onPressed: () {},
+              onPressed: () {
+                ref.read(authProvider.notifier).state = UserRole.guest;
+                context.go('/login');
+              },
               icon: const Icon(Symbols.logout, color: Colors.red),
               label: const Text('ABMELDEN', style: TextStyle(color: Colors.red, fontWeight: FontWeight.bold)),
             ),

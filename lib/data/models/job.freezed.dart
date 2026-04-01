@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Job {
 
- String get id; String get title; String get location; DateTime get date; String get startTime; String get endTime; String get serviceType; JobStatus get status; List<String> get assignedEmployeeIds; String? get notes; String? get clientName; String? get contactPhone;
+ String get id; String get title; String get location; DateTime get date; String get startTime; String get endTime; String get serviceType; JobStatus get status; List<String> get assignedEmployeeIds; String? get notes; String? get clientName; String? get contactPhone; double? get targetLatitude; double? get targetLongitude;
 /// Create a copy of Job
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $JobCopyWith<Job> get copyWith => _$JobCopyWithImpl<Job>(this as Job, _$identity
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Job&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.location, location) || other.location == location)&&(identical(other.date, date) || other.date == date)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.serviceType, serviceType) || other.serviceType == serviceType)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.assignedEmployeeIds, assignedEmployeeIds)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Job&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.location, location) || other.location == location)&&(identical(other.date, date) || other.date == date)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.serviceType, serviceType) || other.serviceType == serviceType)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.assignedEmployeeIds, assignedEmployeeIds)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.targetLatitude, targetLatitude) || other.targetLatitude == targetLatitude)&&(identical(other.targetLongitude, targetLongitude) || other.targetLongitude == targetLongitude));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,location,date,startTime,endTime,serviceType,status,const DeepCollectionEquality().hash(assignedEmployeeIds),notes,clientName,contactPhone);
+int get hashCode => Object.hash(runtimeType,id,title,location,date,startTime,endTime,serviceType,status,const DeepCollectionEquality().hash(assignedEmployeeIds),notes,clientName,contactPhone,targetLatitude,targetLongitude);
 
 @override
 String toString() {
-  return 'Job(id: $id, title: $title, location: $location, date: $date, startTime: $startTime, endTime: $endTime, serviceType: $serviceType, status: $status, assignedEmployeeIds: $assignedEmployeeIds, notes: $notes, clientName: $clientName, contactPhone: $contactPhone)';
+  return 'Job(id: $id, title: $title, location: $location, date: $date, startTime: $startTime, endTime: $endTime, serviceType: $serviceType, status: $status, assignedEmployeeIds: $assignedEmployeeIds, notes: $notes, clientName: $clientName, contactPhone: $contactPhone, targetLatitude: $targetLatitude, targetLongitude: $targetLongitude)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $JobCopyWith<$Res>  {
   factory $JobCopyWith(Job value, $Res Function(Job) _then) = _$JobCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String location, DateTime date, String startTime, String endTime, String serviceType, JobStatus status, List<String> assignedEmployeeIds, String? notes, String? clientName, String? contactPhone
+ String id, String title, String location, DateTime date, String startTime, String endTime, String serviceType, JobStatus status, List<String> assignedEmployeeIds, String? notes, String? clientName, String? contactPhone, double? targetLatitude, double? targetLongitude
 });
 
 
@@ -65,7 +65,7 @@ class _$JobCopyWithImpl<$Res>
 
 /// Create a copy of Job
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? location = null,Object? date = null,Object? startTime = null,Object? endTime = null,Object? serviceType = null,Object? status = null,Object? assignedEmployeeIds = null,Object? notes = freezed,Object? clientName = freezed,Object? contactPhone = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? location = null,Object? date = null,Object? startTime = null,Object? endTime = null,Object? serviceType = null,Object? status = null,Object? assignedEmployeeIds = null,Object? notes = freezed,Object? clientName = freezed,Object? contactPhone = freezed,Object? targetLatitude = freezed,Object? targetLongitude = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -79,7 +79,9 @@ as JobStatus,assignedEmployeeIds: null == assignedEmployeeIds ? _self.assignedEm
 as List<String>,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,clientName: freezed == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
 as String?,contactPhone: freezed == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,targetLatitude: freezed == targetLatitude ? _self.targetLatitude : targetLatitude // ignore: cast_nullable_to_non_nullable
+as double?,targetLongitude: freezed == targetLongitude ? _self.targetLongitude : targetLongitude // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 
@@ -164,10 +166,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone,  double? targetLatitude,  double? targetLongitude)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Job() when $default != null:
-return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone);case _:
+return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone,_that.targetLatitude,_that.targetLongitude);case _:
   return orElse();
 
 }
@@ -185,10 +187,10 @@ return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone,  double? targetLatitude,  double? targetLongitude)  $default,) {final _that = this;
 switch (_that) {
 case _Job():
-return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone);case _:
+return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone,_that.targetLatitude,_that.targetLongitude);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -205,10 +207,10 @@ return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String location,  DateTime date,  String startTime,  String endTime,  String serviceType,  JobStatus status,  List<String> assignedEmployeeIds,  String? notes,  String? clientName,  String? contactPhone,  double? targetLatitude,  double? targetLongitude)?  $default,) {final _that = this;
 switch (_that) {
 case _Job() when $default != null:
-return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone);case _:
+return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_that.endTime,_that.serviceType,_that.status,_that.assignedEmployeeIds,_that.notes,_that.clientName,_that.contactPhone,_that.targetLatitude,_that.targetLongitude);case _:
   return null;
 
 }
@@ -220,7 +222,7 @@ return $default(_that.id,_that.title,_that.location,_that.date,_that.startTime,_
 @JsonSerializable()
 
 class _Job implements Job {
-  const _Job({required this.id, required this.title, required this.location, required this.date, required this.startTime, required this.endTime, required this.serviceType, this.status = JobStatus.open, final  List<String> assignedEmployeeIds = const [], this.notes, this.clientName, this.contactPhone}): _assignedEmployeeIds = assignedEmployeeIds;
+  const _Job({required this.id, required this.title, required this.location, required this.date, required this.startTime, required this.endTime, required this.serviceType, this.status = JobStatus.open, final  List<String> assignedEmployeeIds = const [], this.notes, this.clientName, this.contactPhone, this.targetLatitude, this.targetLongitude}): _assignedEmployeeIds = assignedEmployeeIds;
   factory _Job.fromJson(Map<String, dynamic> json) => _$JobFromJson(json);
 
 @override final  String id;
@@ -241,6 +243,8 @@ class _Job implements Job {
 @override final  String? notes;
 @override final  String? clientName;
 @override final  String? contactPhone;
+@override final  double? targetLatitude;
+@override final  double? targetLongitude;
 
 /// Create a copy of Job
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +259,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Job&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.location, location) || other.location == location)&&(identical(other.date, date) || other.date == date)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.serviceType, serviceType) || other.serviceType == serviceType)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._assignedEmployeeIds, _assignedEmployeeIds)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Job&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.location, location) || other.location == location)&&(identical(other.date, date) || other.date == date)&&(identical(other.startTime, startTime) || other.startTime == startTime)&&(identical(other.endTime, endTime) || other.endTime == endTime)&&(identical(other.serviceType, serviceType) || other.serviceType == serviceType)&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._assignedEmployeeIds, _assignedEmployeeIds)&&(identical(other.notes, notes) || other.notes == notes)&&(identical(other.clientName, clientName) || other.clientName == clientName)&&(identical(other.contactPhone, contactPhone) || other.contactPhone == contactPhone)&&(identical(other.targetLatitude, targetLatitude) || other.targetLatitude == targetLatitude)&&(identical(other.targetLongitude, targetLongitude) || other.targetLongitude == targetLongitude));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,title,location,date,startTime,endTime,serviceType,status,const DeepCollectionEquality().hash(_assignedEmployeeIds),notes,clientName,contactPhone);
+int get hashCode => Object.hash(runtimeType,id,title,location,date,startTime,endTime,serviceType,status,const DeepCollectionEquality().hash(_assignedEmployeeIds),notes,clientName,contactPhone,targetLatitude,targetLongitude);
 
 @override
 String toString() {
-  return 'Job(id: $id, title: $title, location: $location, date: $date, startTime: $startTime, endTime: $endTime, serviceType: $serviceType, status: $status, assignedEmployeeIds: $assignedEmployeeIds, notes: $notes, clientName: $clientName, contactPhone: $contactPhone)';
+  return 'Job(id: $id, title: $title, location: $location, date: $date, startTime: $startTime, endTime: $endTime, serviceType: $serviceType, status: $status, assignedEmployeeIds: $assignedEmployeeIds, notes: $notes, clientName: $clientName, contactPhone: $contactPhone, targetLatitude: $targetLatitude, targetLongitude: $targetLongitude)';
 }
 
 
@@ -275,7 +279,7 @@ abstract mixin class _$JobCopyWith<$Res> implements $JobCopyWith<$Res> {
   factory _$JobCopyWith(_Job value, $Res Function(_Job) _then) = __$JobCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String location, DateTime date, String startTime, String endTime, String serviceType, JobStatus status, List<String> assignedEmployeeIds, String? notes, String? clientName, String? contactPhone
+ String id, String title, String location, DateTime date, String startTime, String endTime, String serviceType, JobStatus status, List<String> assignedEmployeeIds, String? notes, String? clientName, String? contactPhone, double? targetLatitude, double? targetLongitude
 });
 
 
@@ -292,7 +296,7 @@ class __$JobCopyWithImpl<$Res>
 
 /// Create a copy of Job
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? location = null,Object? date = null,Object? startTime = null,Object? endTime = null,Object? serviceType = null,Object? status = null,Object? assignedEmployeeIds = null,Object? notes = freezed,Object? clientName = freezed,Object? contactPhone = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? location = null,Object? date = null,Object? startTime = null,Object? endTime = null,Object? serviceType = null,Object? status = null,Object? assignedEmployeeIds = null,Object? notes = freezed,Object? clientName = freezed,Object? contactPhone = freezed,Object? targetLatitude = freezed,Object? targetLongitude = freezed,}) {
   return _then(_Job(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -306,7 +310,9 @@ as JobStatus,assignedEmployeeIds: null == assignedEmployeeIds ? _self._assignedE
 as List<String>,notes: freezed == notes ? _self.notes : notes // ignore: cast_nullable_to_non_nullable
 as String?,clientName: freezed == clientName ? _self.clientName : clientName // ignore: cast_nullable_to_non_nullable
 as String?,contactPhone: freezed == contactPhone ? _self.contactPhone : contactPhone // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,targetLatitude: freezed == targetLatitude ? _self.targetLatitude : targetLatitude // ignore: cast_nullable_to_non_nullable
+as double?,targetLongitude: freezed == targetLongitude ? _self.targetLongitude : targetLongitude // ignore: cast_nullable_to_non_nullable
+as double?,
   ));
 }
 

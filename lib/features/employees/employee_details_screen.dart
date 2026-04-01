@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:material_symbols_icons/material_symbols_icons.dart';
@@ -49,7 +50,22 @@ class EmployeeDetailsScreen extends ConsumerWidget {
                     _buildInfoRow(Symbols.vpn_key, 'Waffentragbewilligung', employee.weaponsPermit ? 'Vorhanden' : 'Nicht vorhanden', color: employee.weaponsPermit ? Colors.blue : Colors.grey),
                     _buildInfoRow(Symbols.apparel, 'Uniformgrösse', employee.uniformSize ?? 'Nicht hinterlegt'),
                   ]),
-                  const SizedBox(height: 48),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: OutlinedButton.icon(
+                      onPressed: () => context.push('/employees/$employeeId/wallet'),
+                      icon: const Icon(Symbols.account_balance_wallet),
+                      label: const Text('WALLET & ABRECHNUNG ANSEHEN'),
+                      style: OutlinedButton.styleFrom(
+                        foregroundColor: AppColors.navyDeep,
+                        side: const BorderSide(color: AppColors.navyDeep, width: 2),
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 16),
                    SizedBox(
                     width: double.infinity,
                     height: 56,
@@ -86,7 +102,9 @@ class EmployeeDetailsScreen extends ConsumerWidget {
           fit: StackFit.expand,
           children: [
             if (employee.avatarUrl != null)
-              Image.network(employee.avatarUrl!, fit: BoxFit.cover)
+              employee.avatarUrl!.startsWith('http') || kIsWeb
+                  ? Image.network(employee.avatarUrl!, fit: BoxFit.cover)
+                  : Image.asset(employee.avatarUrl!, fit: BoxFit.cover)
             else
               Container(color: AppColors.primaryContainer, child: const Icon(Symbols.person, size: 80, color: Colors.white24)),
             Container(
@@ -125,13 +143,23 @@ class EmployeeDetailsScreen extends ConsumerWidget {
   }
 
   Widget _buildQuickStats(Employee employee) {
-    return Row(
+    return Column(
       children: [
-        Expanded(child: _buildStatItem('RATING', '${employee.rating}', Symbols.star, Colors.amber)),
-        const SizedBox(width: 12),
-        Expanded(child: _buildStatItem('ERFAHRUNG', '${employee.experienceYears}J', Symbols.history, Colors.blue)),
-        const SizedBox(width: 12),
-        Expanded(child: _buildStatItem('SPRACHEN', '${employee.languages.length}', Symbols.language, Colors.green)),
+        Row(
+          children: [
+            Expanded(child: _buildStatItem('RATING', '${employee.rating}', Symbols.star, Colors.amber)),
+            const SizedBox(width: 12),
+            Expanded(child: _buildStatItem('ERFAHRUNG', '${employee.experienceYears}J', Symbols.history, Colors.blue)),
+          ],
+        ),
+        const SizedBox(height: 12),
+        Row(
+          children: [
+            Expanded(child: _buildStatItem('GUTHABEN', '${employee.earnedBalance.toStringAsFixed(2)} CHF', Symbols.account_balance_wallet, Colors.green)),
+            const SizedBox(width: 12),
+            Expanded(child: _buildStatItem('STUNDENSATZ', '${employee.hourlyRate} CHF', Symbols.payments, Colors.orange)),
+          ],
+        ),
       ],
     );
   }
